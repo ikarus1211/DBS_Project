@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox prefHeight="400.0" prefWidth="640.0">
+         <children>
+            <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="478.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Button layoutX="64.0" layoutY="248.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="171.0" text="REGISTER">
+                     <font>
+                        <Font name="Baskerville Old Face" size="25.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="403.0" layoutY="248.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="171.0" text="LOGIN">
+                     <font>
+                        <Font name="Baskerville Old Face" size="25.0" />
+                     </font>
+                  </Button>
+                  <Label layoutX="64.0" layoutY="40.0" prefHeight="136.0" prefWidth="512.0" text="GAMING DATABASE">
+                     <font>
+                        <Font size="55.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+</VBox>
