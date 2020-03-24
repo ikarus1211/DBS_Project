@@ -81,7 +81,7 @@ public class DatabaseConnector {
         PreparedStatement prepstatement = null;
         try {
             prepstatement = connection.prepareStatement("INSERT INTO player " +
-                    "(player_name,player_password,email,no_players,premium_points) VALUES (?,?,?,0,0");
+                    "(player_name,player_password,email,no_characters,premium_points) VALUES (?,?,?,0,0)");
             prepstatement.setString(1, userName);
             prepstatement.setString(2, userPassw);
             prepstatement.setString(3, userEmail);
