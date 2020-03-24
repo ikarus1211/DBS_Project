@@ -9,10 +9,10 @@ public class DatabaseConnector {
     private String name = "root";
     private String passw = "1999";
     private Statement statement = null;
-
+    private ResultSet returnedValue = null;
+    private PreparedStatement prepstatement = null;
     public void DatabseInit()
     {
-        System.out.print("here");
 
         // Driver initialization for connecting to database
         // Maros ak ti to nahodou nepojde v lib je jeden subor a ten si musis nastavit do PATH tohto projektu
@@ -43,40 +43,34 @@ public class DatabaseConnector {
 
     public int checkUser(String userName, String password)
     {
-        ResultSet returnedValue = null;
-        try
-        {
-            PreparedStatement prepstatement =  connection.prepareStatement("SELECT * FROM player" +
-                    "WHERE USERNAME = ?");
+        if(connection == null) {
+            System.out.println("Problem");
+        }
+        try {
+            prepstatement = connection
+                    .prepareStatement("SELECT * FROM player WHERE player_name = ?");
             prepstatement.setString(1, userName);
             returnedValue = prepstatement.executeQuery();
 
-            while(true)
-            {
-                String uName = null;
-                String pWord = null;
-
-                if (returnedValue.next())
-                {
-                    uName = returnedValue.getString("player_name");
-                    pWord = returnedValue.getString("player_password");
-                } else break;
-                if ( uName.equals(userName) && pWord.equals(password)) {
+            if (returnedValue.next()) {
+                if (password.equals(returnedValue.getString("player_password"))) {
                     System.out.print("Login Successful");
                     return 1;
+                } else {
+                    System.out.print("Login failed!");
+                    return 0;
                 }
-            }
+            } else
+                return 0;
         }
-        catch (SQLException e)
-        {
+        catch (SQLException e) {
             e.printStackTrace();
             return -1;
         }
-        return -1;
     }
 
     // This function adds a new user into database
-    public void addUser(String userPassw, String userName, String userEmail)
+    public int addUser(String userPassw, String userName, String userEmail)
     {
         PreparedStatement prepstatement = null;
         try {
@@ -91,9 +85,25 @@ public class DatabaseConnector {
         {
             System.out.print("Failed to add user");
             e.printStackTrace();
+            return -1;
         }
-
+        return 1;
     }
 
+    public void connectionClose()
+    {
+        try {
+            if (returnedValue != null)
+                returnedValue.close();
+            if (statement != null)
+                statement.close();
+            if (connection != null)
+                connection.close();
+            System.out.print("Connection closed");
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.print("Closeing connection failed!");
+        }
+    }
 }

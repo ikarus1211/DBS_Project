@@ -3,45 +3,56 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-            <children>
-                <PasswordField layoutX="50.0" layoutY="94.0" prefHeight="51.0" prefWidth="212.0" promptText="Password">
-                    <font>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.RegController">
+   <children>
+      <VBox layoutX="10.0" layoutY="10.0" prefHeight="400.0" prefWidth="537.0">
+         <children>
+            <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="296.0" prefWidth="382.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <ImageView fitHeight="445.0" fitWidth="769.0" layoutX="-102.0" layoutY="-15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@background.jpg" />
+                     </image>
+                  </ImageView>
+                  <PasswordField fx:id="pass" blendMode="DARKEN" layoutX="283.0" layoutY="88.0" prefHeight="51.0" prefWidth="323.0" promptText="Password" style="-fx-background-color: grey;">
+                     <font>
                         <Font size="24.0" />
-                    </font>
-                </PasswordField>
-                <PasswordField layoutX="50.0" layoutY="29.0" prefHeight="51.0" prefWidth="212.0" promptText="Name">
-                    <font>
+                     </font>
+                  </PasswordField>
+                  <TextField fx:id="username" blendMode="DARKEN" layoutX="283.0" layoutY="19.0" prefHeight="51.0" prefWidth="323.0" promptText="Username" style="-fx-background-color: grey;">
+                     <font>
                         <Font size="24.0" />
-                    </font>
-                </PasswordField>
-                <TextField layoutX="50.0" layoutY="225.0" prefHeight="51.0" prefWidth="212.0" promptText="Email">
-                    <font>
+                     </font>
+                  </TextField>
+                  <Button fx:id="registerButt" blendMode="OVERLAY" layoutX="283.0" layoutY="318.0" mnemonicParsing="false" onAction="#register" prefHeight="60.0" prefWidth="190.0" style="-fx-background-color: grey; -fx-border-color: #8c0000;" text="REGISTER" textFill="#8c0000">
+                     <font>
                         <Font size="24.0" />
-                    </font>
-                </TextField>
-                <TextField layoutX="50.0" layoutY="158.0" prefHeight="51.0" prefWidth="212.0" promptText="Repeat Password">
-                    <font>
+                     </font>
+                  </Button>
+                  <Button fx:id="regBack" blendMode="OVERLAY" layoutX="506.0" layoutY="318.0" mnemonicParsing="false" onAction="#back" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: grey; -fx-border-color: #8c0000;" text="Back" textFill="#8c0000">
+                     <font>
                         <Font size="24.0" />
-                    </font>
-                </TextField>
-                <Button layoutX="46.0" layoutY="307.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="212.0" text="REGISTER">
-                    <font>
+                     </font>
+                  </Button>
+                  <PasswordField fx:id="passCheck" blendMode="DARKEN" layoutX="283.0" layoutY="162.0" prefHeight="51.0" prefWidth="323.0" promptText="Repeat password" style="-fx-background-color: gray;">
+                     <font>
                         <Font size="24.0" />
-                    </font>
-                </Button>
-                <Button layoutX="485.0" layoutY="307.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="106.0" text="Back">
-                    <font>
+                     </font>
+                  </PasswordField>
+                  <TextField fx:id="email" blendMode="DARKEN" layoutX="283.0" layoutY="237.0" prefHeight="51.0" prefWidth="323.0" promptText="Email" style="-fx-background-color: grey;">
+                     <font>
                         <Font size="24.0" />
-                    </font>
-                </Button>
-            </children>
-        </AnchorPane>
-    </children>
-</VBox>
+                     </font>
+                  </TextField>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

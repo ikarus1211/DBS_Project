@@ -31,8 +31,7 @@ public class RegController {
     @FXML
     public void register(ActionEvent event) throws IOException {
 
-        DatabaseConnector dataCon = new DatabaseConnector();
-        dataCon.DatabseInit();
+
         Alert a = new Alert(AlertType.NONE);
 
         String name = username.getText();
@@ -41,14 +40,23 @@ public class RegController {
         String mail = email.getText();
 
         if (passw.equals(passwC) && (!name.equals(""))) {
-            dataCon.addUser(passw, name, mail);
-            a.setAlertType(AlertType.INFORMATION);
-            a.setHeaderText("Account has been created successfully!");
-            a.show();
-            Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            window.setScene(new Scene(root, 635, 400));
-            window.show();
+            Registration registration = new Registration();
+            int flag = registration.registerUser(passw,name,mail);
+
+            if (flag == 1) {
+                a.setAlertType(AlertType.INFORMATION);
+                a.setHeaderText("Account has been created successfully!");
+                a.show();
+
+                Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                window.setScene(new Scene(root, 635, 400));
+                window.show();
+            } else {
+                a.setAlertType(AlertType.INFORMATION);
+                a.setHeaderText("Error while creating account!");
+                a.show();
+            }
         }
         else {
             a.setAlertType(AlertType.WARNING);

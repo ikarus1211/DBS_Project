@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -16,6 +17,7 @@ import java.sql.SQLException;
 
 public class Controller{
 
+    Alert a = new Alert(Alert.AlertType.NONE);
     public Controller() {
 
     }
@@ -37,8 +39,19 @@ public class Controller{
 
     @FXML
     private void Login(ActionEvent event) throws SQLException, IOException, Exception {
-        String name = username.getText();
-        String passw = pass.getText();
+
+        Arthur arthur = new Arthur();
+        if ( arthur.loginUser(username.getText(), pass.getText()) == 1)
+        {
+            a.setAlertType(Alert.AlertType.INFORMATION);
+            a.setHeaderText("You are logged in");
+            a.show();
+        } else {
+            a.setAlertType(Alert.AlertType.INFORMATION);
+            a.setHeaderText("Wrong name or password!");
+            a.show();
+        }
+
 
 
     }

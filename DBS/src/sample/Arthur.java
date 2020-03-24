@@ -15,7 +15,6 @@ public class Arthur extends Application{
 
     private Stage primaryStage;
 
-    private DatabaseConnector dataConnector = new DatabaseConnector();
     @Override
     public void start(Stage primaryStage) throws Exception{
 
@@ -25,12 +24,15 @@ public class Arthur extends Application{
         primaryStage.setTitle("Arthur");
         primaryStage.setScene(new Scene(root, 635, 400));
         primaryStage.show();
-        dataConnector.DatabseInit();
 
     }
 
-    public void registration() throws Exception{
-        sceneChange("registration.fxml");
+    public int loginUser(String username, String password) {
+        DatabaseConnector databaseConnector = new DatabaseConnector();
+        databaseConnector.DatabseInit();
+        int flag = databaseConnector.checkUser(username, password);
+        databaseConnector.connectionClose();
+        return flag;
     }
 
 
