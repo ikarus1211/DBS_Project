@@ -18,15 +18,20 @@ public class Arthur extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception{
 
+        /*
+         * This displays Login GUI which is designed in sample.fxml
+         */
         this.primaryStage = primaryStage;
-
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Arthur");
         primaryStage.setScene(new Scene(root, 635, 400));
         primaryStage.show();
 
     }
-
+    /*
+     *  This function opens connection into database. Then checks the user credentials
+     * and returns value which indicates if login was successful
+     */
     public int loginUser(String username, String password) {
         DatabaseConnector databaseConnector = new DatabaseConnector();
         databaseConnector.DatabseInit();

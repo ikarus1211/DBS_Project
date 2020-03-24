@@ -11,11 +11,14 @@ public class DatabaseConnector {
     private Statement statement = null;
     private ResultSet returnedValue = null;
     private PreparedStatement prepstatement = null;
+
+    /*
+     * Initializing connection into database
+     */
     public void DatabseInit()
     {
 
-        // Driver initialization for connecting to database
-        // Maros ak ti to nahodou nepojde v lib je jeden subor a ten si musis nastavit do PATH tohto projektu
+        // Checks if driver is available
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -41,17 +44,26 @@ public class DatabaseConnector {
 
     }
 
+    /*
+     * Function finds user in database and then evaluate if password is matching.
+     * If password are matching, it return value corresponding to it.
+     */
     public int checkUser(String userName, String password)
     {
+        // In case connection is not established
         if(connection == null) {
             System.out.println("Problem");
         }
+
+        // Try to get user from table
         try {
             prepstatement = connection
                     .prepareStatement("SELECT * FROM player WHERE player_name = ?");
             prepstatement.setString(1, userName);
             returnedValue = prepstatement.executeQuery();
 
+            // If something was found it evaluate the password.
+            // If not there is not a player with given name
             if (returnedValue.next()) {
                 if (password.equals(returnedValue.getString("player_password"))) {
                     System.out.print("Login Successful");
@@ -72,6 +84,7 @@ public class DatabaseConnector {
     // This function adds a new user into database
     public int addUser(String userPassw, String userName, String userEmail)
     {
+
         PreparedStatement prepstatement = null;
         try {
             prepstatement = connection.prepareStatement("INSERT INTO player " +
@@ -90,6 +103,9 @@ public class DatabaseConnector {
         return 1;
     }
 
+    /*
+     * Closing connection
+     */
     public void connectionClose()
     {
         try {

@@ -17,6 +17,9 @@ import java.sql.SQLException;
 
 public class Controller{
 
+    /*
+     * Pop up window for displaying messages
+     */
     Alert a = new Alert(Alert.AlertType.NONE);
     public Controller() {
 
@@ -28,6 +31,9 @@ public class Controller{
     @FXML
     private PasswordField pass;
 
+    /*
+     * Function changes the scene for registration
+     */
 
     @FXML
     private void Register(ActionEvent event) throws SQLException, IOException, Exception {
@@ -37,8 +43,12 @@ public class Controller{
         window.show();
     }
 
+    /*
+     * Functions which gets string that user puts in and then calls function for login.
+     * After login is done it displays alert based on value that was returned
+     */
     @FXML
-    private void Login(ActionEvent event) throws SQLException, IOException, Exception {
+    private void Login(ActionEvent event) {
 
         Arthur arthur = new Arthur();
         if ( arthur.loginUser(username.getText(), pass.getText()) == 1)
