@@ -3,7 +3,7 @@ package Database;
 import java.sql.*;
 
 public class DatabaseConnector {
-
+        // TODO prerobit dokumnetaciu a diagra
     private Connection connection = null;
     private String url = "jdbc:mysql://localhost:3306/dbs_projekt?characterEncoding=latin1";
     private String name = "root";
@@ -37,7 +37,7 @@ public class DatabaseConnector {
 
         //Testing connection
         if (connection != null) {
-            System.out.println("Connection established");
+            System.out.println("Connection established\n");
         } else {
             System.out.println("Problem with connection");
         }
@@ -67,7 +67,7 @@ public class DatabaseConnector {
             if (returnedValue.next()) {
                 if (password.equals(returnedValue.getString("player_password"))) {
                     System.out.print("Login Successful");
-                    return 1;
+                    return returnedValue.getInt("player_id");
                 } else {
                     System.out.print("Login failed!");
                     return 0;
@@ -115,11 +115,48 @@ public class DatabaseConnector {
                 statement.close();
             if (connection != null)
                 connection.close();
-            System.out.print("Connection closed");
+            System.out.print("Connection closed\n");
 
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.print("Closeing connection failed!");
+        }
+    }
+
+    public ResultSet getFromQuery(String quer)
+    {
+        try {
+            prepstatement = connection
+                    .prepareStatement(quer);
+            returnedValue = prepstatement.executeQuery();
+            return returnedValue;
+        } catch (SQLException e)
+        {
+            System.out.println("Problem with player table");
+        }
+        return null;
+    }
+
+    public int addCharacter(String charName, String charClass, String charRace)
+    {
+        {
+
+            PreparedStatement prepstatement = null;
+            try {
+                prepstatement = connection.prepareStatement("INSERT INTO game_character " +
+                        "(character_name,character_xp,class,race,game_money,player_owner) VALUES (?,0,?,?,0)");
+                prepstatement.setString(1, charName);
+                prepstatement.setString(2, charClass);
+                prepstatement.setString(3, charRace);
+                prepstatement.executeUpdate();
+
+            } catch (SQLException e)
+            {
+                System.out.print("Failed to add user");
+                e.printStackTrace();
+                return -1;
+            }
+            return 1;
         }
     }
 }

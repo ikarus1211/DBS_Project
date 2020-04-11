@@ -48,20 +48,24 @@ public class Controller{
      * After login is done it displays alert based on value that was returned
      */
     @FXML
-    private void Login(ActionEvent event) {
+    private void Login(ActionEvent event) throws IOException {
 
         Arthur arthur = new Arthur();
-        if ( arthur.loginUser(username.getText(), pass.getText()) == 1)
+        int id = arthur.loginUser(username.getText(), pass.getText());
+        if (id > 0)
         {
-            a.setAlertType(Alert.AlertType.INFORMATION);
+            /*a.setAlertType(Alert.AlertType.INFORMATION);
             a.setHeaderText("You are logged in");
-            a.show();
+            a.show();*/
+            Parent root = FXMLLoader.load(getClass().getResource("menu/main_screen.fxml"));
+            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            window.setScene(new Scene(root, 1200, 800));
+            window.show();
         } else {
             a.setAlertType(Alert.AlertType.INFORMATION);
             a.setHeaderText("Wrong name or password!");
             a.show();
         }
-
 
 
     }
