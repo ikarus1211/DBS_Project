@@ -137,17 +137,18 @@ public class DatabaseConnector {
         return null;
     }
 
-    public int addCharacter(String charName, String charClass, String charRace)
+    public int addCharacter(String charName, String charClass, String charRace, int id)
     {
         {
 
             PreparedStatement prepstatement = null;
             try {
                 prepstatement = connection.prepareStatement("INSERT INTO game_character " +
-                        "(character_name,character_xp,class,race,game_money,player_owner) VALUES (?,0,?,?,0)");
+                        "(character_name,character_xp,class,race,game_money,player_owner) VALUES (?,0,?,?,0,?)");
                 prepstatement.setString(1, charName);
                 prepstatement.setString(2, charClass);
                 prepstatement.setString(3, charRace);
+                prepstatement.setInt(4, id);
                 prepstatement.executeUpdate();
 
             } catch (SQLException e)

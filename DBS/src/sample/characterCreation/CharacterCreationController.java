@@ -11,6 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import sample.Character;
+import sample.menu.MenuController;
 
 import javax.swing.*;
 import javax.xml.crypto.Data;
@@ -30,28 +32,46 @@ public class CharacterCreationController implements Initializable {
     @FXML
     TextField character_name_creation;
 
+    private int playerId;
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        race_id.getItems().addAll("Human","Maros","Goblin","Shemale");
-        class_id.getItems().addAll("David","Warrior","Porn star");
+        public void initialize(URL url, ResourceBundle resourceBundle) {
+            race_id.getItems().addAll("Human","Maros","Goblin","Shemale");
+            class_id.getItems().addAll("David","Warrior","Porn star");
 
 
     }
+
+    public void initId(int id)
+    {
+        this.playerId = id;
+    }
     public void characterCreation(javafx.event.ActionEvent event) {
-        DatabaseConnector databaseConnector = new DatabaseConnector();
-        databaseConnector.DatabseInit();
+        DatabaseConnector connector = new DatabaseConnector();
+        connector.DatabseInit();
 
-        databaseConnector.addCharacter(character_name_creation.getText(), race_id.getValue(), class_id.getValue());
-        databaseConnector.connectionClose();
+        Character character = new Character(character_name_creation.getText(),0,0,class_id.getValue(),
+                race_id.getValue(),0,false, 0, playerId);
 
+        connector.addCharacter(character.getChar_name(),character.getChar_class(),
+                character.getRace(),playerId);
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("../menu/main_screen.fxml"));
-            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            window.setScene(new Scene(root, 635, 400));
-            window.show();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../menu/main_screen.fxml"));
+            Parent parent = loader.load();
+
+            Scene scene = new Scene(parent);
+
+            MenuController controller = loader.getController();
+            controller.initData(playerId);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
         } catch (IOException e)
         {
             System.out.println("IO error");
         }
+
+
+
     }
 }

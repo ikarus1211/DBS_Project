@@ -10,7 +10,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import sample.menu.MenuController;
 
+import javax.swing.plaf.nimbus.State;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -54,13 +56,19 @@ public class Controller{
         int id = arthur.loginUser(username.getText(), pass.getText());
         if (id > 0)
         {
-            /*a.setAlertType(Alert.AlertType.INFORMATION);
-            a.setHeaderText("You are logged in");
-            a.show();*/
-            Parent root = FXMLLoader.load(getClass().getResource("menu/main_screen.fxml"));
-            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            window.setScene(new Scene(root, 1200, 800));
-            window.show();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("menu/main_screen.fxml"));
+            Parent parent = loader.load();
+
+            Scene scene = new Scene(parent);
+
+            MenuController controller = loader.getController();
+            controller.initData(id);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+
         } else {
             a.setAlertType(Alert.AlertType.INFORMATION);
             a.setHeaderText("Wrong name or password!");
