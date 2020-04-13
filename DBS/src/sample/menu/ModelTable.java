@@ -2,18 +2,24 @@ package sample.menu;
 
 public class ModelTable {
     String name;
-    int level;
+    String level;
+    String id;
 
-    public ModelTable(String name, int levle) {
+    public ModelTable(String name, String level, String id) {
         this.name = name;
-        this.level = levle;
+        this.level = level;
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getLevle() {
+    public String getLevel() {
         return level;
+    }
+
+    public String getId() {
+        return id;
     }
 }

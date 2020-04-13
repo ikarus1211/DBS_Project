@@ -7,16 +7,19 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.menu.MenuController">
    <children>
-      <Button fx:id="btnSearch" layoutX="415.0" layoutY="19.0" mnemonicParsing="false" text="Search" />
+      <Button fx:id="btnSearch" layoutX="415.0" layoutY="19.0" mnemonicParsing="false" onAction="#searchInDatabase" text="Search" />
       <TextField fx:id="searchBar" layoutX="260.0" layoutY="19.0" />
       <Button layoutX="291.0" layoutY="73.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="62.0" text="Change" />
-      <TableView fx:id="tabView" layoutX="14.0" layoutY="19.0" prefHeight="370.0" prefWidth="238.0">
+      <TableView fx:id="tabView" layoutX="14.0" layoutY="19.0" prefHeight="330.0" prefWidth="238.0">
         <columns>
-          <TableColumn id="name_id" prefWidth="75.0" text="Name" />
-          <TableColumn id="level_id" prefWidth="75.0" text="Level" />
+            <TableColumn fx:id="id_table" prefWidth="50.0" text="Id" />
+            <TableColumn fx:id="name_id" prefWidth="117.0" text="Name" />
+            <TableColumn fx:id="level_id" prefWidth="70.0" text="Level" />
         </columns>
       </TableView>
-      <Button  fx:id="createNewCharacter" onAction="#switchToCharCreation" layoutX="269.0" layoutY="121.0" mnemonicParsing="false" text="Create Character" />
+      <Button fx:id="createNewCharacter" layoutX="269.0" layoutY="121.0" mnemonicParsing="false" onAction="#switchToCharCreation" text="Create Character" />
       <ImageView fitHeight="98.0" fitWidth="98.0" layoutX="467.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="btn_set_next_offset" layoutX="211.0" layoutY="361.0" mnemonicParsing="false" onAction="#incrementOffset" text="Next" />
+      <Button fx:id="btn_set_prev_offset" layoutX="158.0" layoutY="361.0" mnemonicParsing="false" onAction="#decrementOffset" text="Prev" />
    </children>
 </AnchorPane>

@@ -55,6 +55,7 @@ public class CharacterCreationController implements Initializable {
         connector.addCharacter(character.getChar_name(),character.getChar_class(),
                 character.getRace(),playerId);
         try {
+            connector.connectionClose();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../menu/main_screen.fxml"));
             Parent parent = loader.load();
 

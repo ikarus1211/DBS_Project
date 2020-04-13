@@ -160,4 +160,21 @@ public class DatabaseConnector {
             return 1;
         }
     }
+
+    public ResultSet getCharacters(int id ,int offset) throws SQLException {
+        prepstatement = connection
+                .prepareStatement("SELECT * FROM game_character WHERE player_owner = ? LIMIT ?,12");
+        prepstatement.setInt(1, id);
+        prepstatement.setInt(2, offset);
+        returnedValue = prepstatement.executeQuery();
+        return  returnedValue;
+    }
+
+    public ResultSet searchInTable(String searchValue) throws SQLException {
+        prepstatement = connection
+                .prepareStatement("SELECT * FROM game_character WHERE character_name = ?");
+        prepstatement.setString(1, searchValue);
+        returnedValue = prepstatement.executeQuery();
+        return  returnedValue;
+    }
 }
