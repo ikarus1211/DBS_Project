@@ -1,5 +1,6 @@
 package character;
 
+
 import menu.MyResult;
 
 public class Character {
@@ -126,4 +127,3 @@ public class Character {
         return new MyResult(counter,modulo);
     }
 }
-

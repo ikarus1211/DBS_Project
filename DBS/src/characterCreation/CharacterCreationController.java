@@ -1,6 +1,6 @@
 package characterCreation;
 
-import Database.DatabaseConnector;
+import database.DatabaseConnector;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,10 +31,9 @@ public class CharacterCreationController implements Initializable {
 
     private int playerId;
     @Override
-        public void initialize(URL url, ResourceBundle resourceBundle) {
-            race_id.getItems().addAll("Human","Maros","Goblin","Shemale");
-            class_id.getItems().addAll("Hunter","Warrior","Paladin","Rogue","Mage");
-
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        race_id.getItems().addAll("Demon","Orc","Goblin","Human");
+        class_id.getItems().addAll("Paladin","Warrior","Rugue", "Hunter", "Mage");
 
     }
 
@@ -52,8 +51,7 @@ public class CharacterCreationController implements Initializable {
         connector.addCharacter(character.getChar_name(),character.getChar_class(),
                 character.getRace(),playerId);
         try {
-            connector.connectionClose();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../menu/main_screen.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../menu/main_screen.fxml"));
             Parent parent = loader.load();
 
             Scene scene = new Scene(parent);
@@ -69,7 +67,23 @@ public class CharacterCreationController implements Initializable {
             System.out.println("IO error");
         }
 
+    }
+    @FXML
+    public void dontCreateCharacter(javafx.event.ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../menu/main_screen.fxml"));
+            Parent parent = loader.load();
 
+            Scene scene = new Scene(parent);
 
+            MenuController controller = loader.getController();
+            controller.initData(playerId);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            System.out.println("IO error");
+        }
     }
 }

@@ -15,11 +15,11 @@
             <children>
                 <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="394.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
                     <children>
-                  <ImageView fitHeight="444.0" fitWidth="727.0" layoutX="-78.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@menu.jpg" />
-                     </image>
-                  </ImageView>
+                        <ImageView fitHeight="444.0" fitWidth="727.0" layoutX="-78.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@menu.jpg" />
+                            </image>
+                        </ImageView>
                         <Button fx:id="register" layoutX="457.0" layoutY="337.0" mnemonicParsing="false" onAction="#Register" prefHeight="43.0" prefWidth="171.0" style="-fx-background-color: transparent;" text="REGISTER" textFill="RED">
                             <font>
                                 <Font name="Baskerville Old Face" size="25.0" />
@@ -30,16 +30,16 @@
                                 <Font name="Baskerville Old Face" size="25.0" />
                             </font>
                         </Button>
-                  <TextField fx:id="username" layoutX="32.0" layoutY="28.0" prefHeight="55.0" prefWidth="228.0" style="-fx-border-color: black; -fx-background-color: transparent; -fx-border-width: 2;" text="Username">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </TextField>
-                  <PasswordField fx:id="pass" layoutX="32.0" layoutY="94.0" prefHeight="55.0" prefWidth="227.0" style="-fx-background-color: transparent; -fx-border-color: black; -fx-border-width: 2;" text="Password">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </PasswordField>
+                        <TextField fx:id="username" layoutX="32.0" layoutY="28.0" prefHeight="55.0" prefWidth="228.0" promptText="Username" style="-fx-border-color: black; -fx-background-color: transparent; -fx-border-width: 2;">
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                        </TextField>
+                        <PasswordField fx:id="pass" layoutX="32.0" layoutY="94.0" prefHeight="55.0" prefWidth="227.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: black; -fx-border-width: 2;">
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                        </PasswordField>
                     </children>
                 </AnchorPane>
             </children>

@@ -38,6 +38,12 @@ public class RegController {
         String passwC = passCheck.getText();
         String mail = email.getText();
 
+        if (name.length() < 20) {
+            a.setAlertType(AlertType.WARNING);
+            a.setHeaderText("Username is too long!");
+            a.show();
+        }
+
         if (passw.equals(passwC) && (!name.equals(""))) {
             Registration registration = new Registration();
             int flag = registration.registerUser(passw,name,mail);
@@ -47,7 +53,7 @@ public class RegController {
                 a.setHeaderText("Account has been created successfully!");
                 a.show();
 
-                Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("/login/sample.fxml"));
                 Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 window.setScene(new Scene(root, 635, 400));
                 window.show();
@@ -66,7 +72,7 @@ public class RegController {
 
     @FXML
     public void back(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/login/sample.fxml"));
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setScene(new Scene(root, 635, 400));
         window.show();

@@ -1,7 +1,6 @@
 package registration;
 
-import Database.DatabaseConnector;
-import javafx.stage.Stage;
+import database.DatabaseConnector;
 
 public class Registration {
 

@@ -1,7 +1,6 @@
 package menu;
 
-
-import Database.DatabaseConnector;
+import database.DatabaseConnector;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -73,6 +72,7 @@ public class MenuController implements Initializable {
 
     private int offset;
     private int personID;
+    private int char_id;
     private ResultSet resultSet;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -144,6 +144,13 @@ public class MenuController implements Initializable {
         }
 
     }
+
+    public void deleteCharacter() {
+        databaseConnector.deleteCharacter(char_id);
+        oblist.clear();
+        getCharacters(personID);
+    }
+
     public void searchInDatabase()
     {
 
@@ -183,6 +190,7 @@ public class MenuController implements Initializable {
             newResultSet =  databaseConnector.getOneCharacter(Integer.parseInt(returned.id));
             if (newResultSet.next())
             {
+                char_id = newResultSet.getInt("character_id");
                 char_name.setText(newResultSet.getString("character_name"));
                 money_value.setText(Integer.toString(newResultSet.getInt("game_money")));
                 guild_name.setText(Integer.toString(newResultSet.getInt("guild_id")));
