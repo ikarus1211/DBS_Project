@@ -36,7 +36,7 @@ public class CharacterCreationController implements Initializable {
     @Override
         public void initialize(URL url, ResourceBundle resourceBundle) {
             race_id.getItems().addAll("Human","Maros","Goblin","Shemale");
-            class_id.getItems().addAll("David","Warrior","Porn star");
+            class_id.getItems().addAll("Hunter","Warrior","Paladin","Rogue","Mage");
 
 
     }

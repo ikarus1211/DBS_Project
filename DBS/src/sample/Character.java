@@ -1,5 +1,7 @@
 package sample;
 
+import java.util.ArrayList;
+
 public class Character {
 
     private int character_id;
@@ -24,6 +26,9 @@ public class Character {
         this.guild_leader = guild_leader;
         this.guild_id = guild_id;
         this.owner = owner;
+    }
+    public Character() {
+
     }
 
     public int getCharacter_id() {
@@ -105,4 +110,20 @@ public class Character {
     public void setOwner(int owner) {
         this.owner = owner;
     }
+
+    public MyResult calculateLevel(int rawXp)
+    {
+        int counter  = 1;
+        int decrement = 100;
+
+        while (rawXp-decrement >0)
+        {
+            rawXp -= decrement;
+            decrement *= 2;
+            counter++;
+        }
+        double modulo = rawXp / decrement;
+        return new MyResult(counter,modulo);
+    }
 }
+

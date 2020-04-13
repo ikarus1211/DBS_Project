@@ -9,17 +9,31 @@
    <children>
       <Button fx:id="btnSearch" layoutX="415.0" layoutY="19.0" mnemonicParsing="false" onAction="#searchInDatabase" text="Search" />
       <TextField fx:id="searchBar" layoutX="260.0" layoutY="19.0" />
-      <Button layoutX="291.0" layoutY="73.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="62.0" text="Change" />
-      <TableView fx:id="tabView" layoutX="14.0" layoutY="19.0" prefHeight="330.0" prefWidth="238.0">
+      <TableView fx:id="tabView" layoutX="14.0" layoutY="19.0" onMouseClicked="#detailedView" prefHeight="330.0" prefWidth="238.0">
         <columns>
             <TableColumn fx:id="id_table" prefWidth="50.0" text="Id" />
             <TableColumn fx:id="name_id" prefWidth="117.0" text="Name" />
             <TableColumn fx:id="level_id" prefWidth="70.0" text="Level" />
         </columns>
       </TableView>
-      <Button fx:id="createNewCharacter" layoutX="269.0" layoutY="121.0" mnemonicParsing="false" onAction="#switchToCharCreation" text="Create Character" />
-      <ImageView fitHeight="98.0" fitWidth="98.0" layoutX="467.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="createNewCharacter" layoutX="28.0" layoutY="361.0" mnemonicParsing="false" onAction="#switchToCharCreation" text="Create Character" />
+      <ImageView fx:id="image" fitHeight="105.0" fitWidth="105.0" layoutX="476.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
+
+      </ImageView>
       <Button fx:id="btn_set_next_offset" layoutX="211.0" layoutY="361.0" mnemonicParsing="false" onAction="#incrementOffset" text="Next" />
       <Button fx:id="btn_set_prev_offset" layoutX="158.0" layoutY="361.0" mnemonicParsing="false" onAction="#decrementOffset" text="Prev" />
+      <Label fx:id="char_name" layoutX="474.0" layoutY="57.0" prefHeight="17.0" prefWidth="105.0" text="Label" />
+      <Label layoutX="344.0" layoutY="365.0" text="Level" />
+      <ProgressBar fx:id="progBarLevel" id="xp_bar" layoutX="426.0" layoutY="365.0" prefHeight="18.0" prefWidth="160.0" progress="0.48" />
+      <Label layoutX="344.0" layoutY="340.0" prefHeight="18.0" prefWidth="41.0" text="Money:" />
+      <Label layoutX="492.0" layoutY="341.0" text="Xp" />
+      <Label fx:id="money_value" layoutX="395.0" layoutY="341.0" text="Label" />
+      <Label fx:id="level_number" layoutX="381.0" layoutY="366.0" text="Label" />
+      <Button fx:id="btn_inventory" layoutX="500.0" layoutY="292.0" mnemonicParsing="false" text="Inventory" />
+      <Button fx:id="btn_quest" layoutX="426.0" layoutY="292.0" mnemonicParsing="false" text="Quests" />
+      <Label layoutX="344.0" layoutY="211.0" prefHeight="18.0" prefWidth="41.0" text="Guild:" />
+      <Label fx:id="guild_name" layoutX="396.0" layoutY="211.0" prefHeight="17.0" prefWidth="113.0" text="Label" />
+      <Label fx:id="guild_member" layoutX="515.0" layoutY="210.0" prefHeight="18.0" prefWidth="66.0" text="Label" />
+      <Label fx:id="race_name" layoutX="476.0" layoutY="192.0" prefHeight="17.0" prefWidth="66.0" text="Label" />
    </children>
 </AnchorPane>

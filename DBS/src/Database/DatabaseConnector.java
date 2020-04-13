@@ -177,4 +177,11 @@ public class DatabaseConnector {
         returnedValue = prepstatement.executeQuery();
         return  returnedValue;
     }
+    public ResultSet getOneCharacter(int id) throws SQLException {
+        prepstatement = connection
+                .prepareStatement("SELECT * FROM game_character WHERE character_id = ?");
+        prepstatement.setInt(1, id);
+        returnedValue = prepstatement.executeQuery();
+        return returnedValue;
+    }
 }

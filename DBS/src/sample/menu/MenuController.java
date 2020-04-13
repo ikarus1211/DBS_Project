@@ -12,10 +12,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import sample.Character;
+import sample.MyResult;
 import sample.characterCreation.CharacterCreationController;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -43,6 +48,27 @@ public class MenuController implements Initializable {
     Button btn_set_next_offset;
     @FXML
     Button btn_set_prev_offset;
+    @FXML
+    Label char_name;
+    @FXML
+    Button btn_inventory;
+    @FXML
+    Button btn_quest;
+    @FXML
+    Label money_value;
+    @FXML
+    Label level_number;
+    @FXML
+    Label guild_name;
+    @FXML
+    Label guild_member;
+    @FXML
+    Label race_name;
+    @FXML
+    ProgressBar progBarLevel;
+    @FXML
+    ImageView image;
+
 
     ObservableList<ModelTable> oblist = FXCollections.observableArrayList();
     DatabaseConnector databaseConnector = new DatabaseConnector();
@@ -149,6 +175,51 @@ public class MenuController implements Initializable {
         offset -= 12;
         oblist.clear();
         getCharacters(personID);
+    }
+
+    public void detailedView()
+    {
+        ResultSet newResultSet;
+        ModelTable returned = tabView.getSelectionModel().getSelectedItem();
+        try {
+            newResultSet =  databaseConnector.getOneCharacter(Integer.parseInt(returned.id));
+            if (newResultSet.next())
+            {
+                char_name.setText(newResultSet.getString("character_name"));
+                money_value.setText(Integer.toString(newResultSet.getInt("game_money")));
+                guild_name.setText(Integer.toString(newResultSet.getInt("guild_id")));
+                race_name.setText(newResultSet.getString("race"));
+                Character calc = new Character();
+                MyResult retValue = calc.calculateLevel(newResultSet.getInt("character_xp"));
+                level_number.setText(Integer.toString(retValue.getFinalLevel()));
+                progBarLevel.setProgress(retValue.getExp());
+                FileInputStream imageStream = new FileInputStream(choseImage(newResultSet.getString("class")));
+                Image im = new Image (imageStream );
+                image.setImage(im);
+
+            }
+
+
+        }
+        catch (SQLException | FileNotFoundException e)
+        {
+            System.out.println("SQL error");
+        }
+
+    }
+    private String choseImage(String charClass)
+    {
+        if (charClass.equals("Warrior"))
+            return "DBS/src/img/warior.png";
+        if (charClass.equals("Paladin"))
+            return "DBS/src/img/paladin.png";
+        if (charClass.equals("Rogue"))
+            return "DBS/src/img/rogue.png";
+        if (charClass.equals("Mage"))
+            return "DBS/src/img/mage.png";
+        if (charClass.equals("Hunter"))
+            return "DBS/src/img/hunter.png";
+        return null;
     }
 
 }
