@@ -47,6 +47,7 @@ DEFAULT CHARSET=utf8;
 
 CREATE TABLE dbs_projekt.game_character (
     character_id int not null AUTO_INCREMENT,
+    character_name varchar(24),
     hours_played int,
     character_xp int not null,
     class varchar(20),
