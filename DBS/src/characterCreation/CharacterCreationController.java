@@ -1,4 +1,4 @@
-package sample.characterCreation;
+package characterCreation;
 
 import Database.DatabaseConnector;
 import javafx.fxml.FXML;
@@ -11,12 +11,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import sample.Character;
-import sample.menu.MenuController;
+import character.Character;
+import menu.MenuController;
 
-import javax.swing.*;
-import javax.xml.crypto.Data;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -56,7 +53,7 @@ public class CharacterCreationController implements Initializable {
                 character.getRace(),playerId);
         try {
             connector.connectionClose();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../menu/main_screen.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../menu/main_screen.fxml"));
             Parent parent = loader.load();
 
             Scene scene = new Scene(parent);

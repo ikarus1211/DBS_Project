@@ -1,6 +1,4 @@
-package sample.menu;
-
-import javafx.fxml.Initializable;
+package menu;
 
 public class MainMenu {
     private int id;

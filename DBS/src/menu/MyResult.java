@@ -1,4 +1,4 @@
-package sample;
+package menu;
 
 public final class MyResult {
     private final int finalLevel;

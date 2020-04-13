@@ -1,4 +1,4 @@
-package sample.menu;
+package menu;
 
 
 import Database.DatabaseConnector;
@@ -15,9 +15,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import sample.Character;
-import sample.MyResult;
-import sample.characterCreation.CharacterCreationController;
+import character.Character;
+import characterCreation.CharacterCreationController;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -25,7 +24,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.ResourceBundle;
 
 public class MenuController implements Initializable {

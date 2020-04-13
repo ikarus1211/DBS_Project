@@ -1,4 +1,4 @@
-package sample.menu;
+package menu;
 
 public class ModelTable {
     String name;

@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.characterCreation.CharacterCreationController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="characterCreation.CharacterCreationController">
    <children>
       <TextField fx:id="character_name_creation" layoutX="226.0" layoutY="69.0" promptText="Name" />
       <ChoiceBox fx:id="race_id" layoutX="225.0" layoutY="146.0" prefWidth="150.0" />

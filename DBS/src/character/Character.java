@@ -1,6 +1,6 @@
-package sample;
+package character;
 
-import java.util.ArrayList;
+import menu.MyResult;
 
 public class Character {
 
