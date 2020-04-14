@@ -19,7 +19,7 @@ public class Arthur extends Application{
 
         this.primaryStage = primaryStage;
 
-        Parent root = FXMLLoader.load(getClass().getResource("../login/sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../main/sample.fxml"));
         primaryStage.setTitle("Arthur");
         primaryStage.setScene(new Scene(root, 635, 400));
         primaryStage.show();

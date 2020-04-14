@@ -118,7 +118,7 @@ public class MenuController implements Initializable {
         }
         catch (SQLException e)
         {
-
+            System.out.println("exeption");
         }
         if (oblist == null)
             System.out.println("Prazdna tabulka");
@@ -187,7 +187,7 @@ public class MenuController implements Initializable {
         getCharacters(personID);
     }
 
-    public void detailedView()
+    public void detailedView() throws NullPointerException
     {
         ResultSet newResultSet;
         ModelTable returned = tabView.getSelectionModel().getSelectedItem();
