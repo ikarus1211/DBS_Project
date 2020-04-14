@@ -16,7 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import menu.MenuController;
-
+import menu.ModelTable;
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,7 +52,7 @@ public class LeaderboardController implements Initializable {
     ObservableList<LbModelTable> oblist = FXCollections.observableArrayList();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        lbChoiceBox.getItems().addAll("Players");
+        lbChoiceBox.getItems().addAll("Players", "Guilds");
         connector = new DatabaseConnector();
         connector.DatabseInit();
         offset = 0;
@@ -66,15 +66,21 @@ public class LeaderboardController implements Initializable {
     public void selectFilter()
     {
         String selected = lbChoiceBox.getValue().toString();
-        System.out.println(selected);
-        if (selected.equals("Players"))
+    //    System.out.println(selected);
+        oblist.clear();
+        if (selected.equals("Players")) {
             runPlayerFilter();
+        }
+        else if (selected.equals("Guilds")) {
+            runGuildsFilter();
+        }
     }
+
     public void runPlayerFilter()
     {
         lbFirstCol.setText("Player");
-        lbSecondCol.setText("AVG Experience");
-        lbThirdCol.setText("Best character");
+        lbSecondCol.setText("Best character");
+        lbThirdCol.setText("AVG Experience");
         lbFourthCol.setText("NoCharacters");
         lbFifthCol.setText("Character XP");
         lbFirstCol.setCellValueFactory(new PropertyValueFactory<>("playerName"));
@@ -99,6 +105,37 @@ public class LeaderboardController implements Initializable {
         lbTable.setItems(oblist);
     }
 
+    public void runGuildsFilter(){
+        lbFirstCol.setText("Guild's name");
+        lbSecondCol.setText("Number of players");
+        lbThirdCol.setText("");
+        lbFourthCol.setText("Total amount of money");
+        lbFifthCol.setText("");
+
+        lbFirstCol.setCellValueFactory(new PropertyValueFactory<>("playerName"));
+        lbSecondCol.setCellValueFactory(new PropertyValueFactory<>("avgExperience"));
+        lbThirdCol.setCellValueFactory(new PropertyValueFactory<>("bestCharacter"));
+        lbFourthCol.setCellValueFactory(new PropertyValueFactory<>("numberCharacter"));
+        lbFifthCol.setCellValueFactory(new PropertyValueFactory<>("bestExperience"));
+
+        try {
+            ResultSet resultSet = connector.bestGuild(offset);
+            while (resultSet.next())
+            {
+                oblist.add(new LbModelTable(resultSet.getString("Guild_Name"),
+                        "",
+                        resultSet.getInt("no_players"),
+                        resultSet.getInt("AMOUNT_OF_GOLD"),
+                        0));
+            }
+        }catch (SQLException e)
+        {
+            System.out.println(e);
+        }
+        lbTable.setItems(oblist);
+    }
+
+
     public void goBack(javafx.event.ActionEvent event)
     {
         try {
@@ -121,16 +158,24 @@ public class LeaderboardController implements Initializable {
     }
     public void incrementOffset()
     {
+        String selected = lbChoiceBox.getValue().toString();
         offset += 100;
         oblist.clear();
-        runPlayerFilter();
+        if (selected.equals("Players")) {
+            runPlayerFilter();
+        }
+        else runGuildsFilter();
     }
 
     public void decrementOffset()
     {
+        String selected = lbChoiceBox.getValue().toString();
         offset -= 100;
         oblist.clear();
-        runPlayerFilter();
-    }
+        if (selected.equals("Players")) {
+            runPlayerFilter();
+            }
+        else runGuildsFilter();
+        }
 
 }

@@ -62,7 +62,7 @@ public class DatabaseConnector {
             // If not there is not a player with given name
             if (returnedValue.next()) {
                 if (password.equals(returnedValue.getString("player_password"))) {
-                    System.out.print("login Successful");
+      //              System.out.print("login Successful");
                     return returnedValue.getInt("player_id");
                 } else {
                     System.out.print("login failed!");
@@ -111,11 +111,11 @@ public class DatabaseConnector {
                 statement.close();
             if (connection != null)
                 connection.close();
-            System.out.print("Connection closed\n");
+    //        System.out.print("Connection closed\n");
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.print("Closeing connection failed!");
+            System.out.print("Closing connection failed!");
         }
     }
 
@@ -206,5 +206,17 @@ public class DatabaseConnector {
         prepstatement.setInt(1,offset);
         ResultSet resultSet = prepstatement.executeQuery();
         return resultSet;
+    }
+
+    public ResultSet bestGuild(int offset) throws SQLException {
+        prepstatement = connection
+                .prepareStatement("SELECT guild_name as Guild_Name, number_of_players as no_players, SUM(game_money) as AMOUNT_OF_GOLD\n" +
+                        "FROM guild g\n" +
+                        "INNER JOIN game_character c ON c.guild_id = g.guild_id\n" +
+                        "group by guild_name\n" +
+                        "order by 3 DESC\n" +
+                        "LIMIT ?,100");
+        prepstatement.setInt(1,offset);
+        return prepstatement.executeQuery();
     }
 }
