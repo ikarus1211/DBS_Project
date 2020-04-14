@@ -191,30 +191,30 @@ public class MenuController implements Initializable {
     {
         ResultSet newResultSet;
         ModelTable returned = tabView.getSelectionModel().getSelectedItem();
-        try {
-            newResultSet =  databaseConnector.getOneCharacter(Integer.parseInt(returned.id));
-            if (newResultSet.next())
-            {
-                char_id = newResultSet.getInt("character_id");
-                char_name.setText(newResultSet.getString("character_name"));
-                money_value.setText(Integer.toString(newResultSet.getInt("game_money")));
-                guild_name.setText(Integer.toString(newResultSet.getInt("guild_id")));
-                race_name.setText(newResultSet.getString("race"));
-                Character calc = new Character();
-                MyResult retValue = calc.calculateLevel(newResultSet.getInt("character_xp"));
-                level_number.setText(Integer.toString(retValue.getFinalLevel()));
-                progBarLevel.setProgress(retValue.getExp());
-                FileInputStream imageStream = new FileInputStream(choseImage(newResultSet.getString("class")));
-                Image im = new Image (imageStream );
-                image.setImage(im);
 
+        if (returned != null) {
+            try {
+                newResultSet = databaseConnector.getOneCharacter(Integer.parseInt(returned.id));
+                if (newResultSet.next()) {
+                    char_id = newResultSet.getInt("character_id");
+                    char_name.setText(newResultSet.getString("character_name"));
+                    money_value.setText(Integer.toString(newResultSet.getInt("game_money")));
+                    guild_name.setText(Integer.toString(newResultSet.getInt("guild_id")));
+                    race_name.setText(newResultSet.getString("race"));
+                    Character calc = new Character();
+                    MyResult retValue = calc.calculateLevel(newResultSet.getInt("character_xp"));
+                    level_number.setText(Integer.toString(retValue.getFinalLevel()));
+                    progBarLevel.setProgress(retValue.getExp());
+                    FileInputStream imageStream = new FileInputStream(choseImage(newResultSet.getString("class")));
+                    Image im = new Image(imageStream);
+                    image.setImage(im);
+
+                }
+
+
+            } catch (SQLException | FileNotFoundException | NullPointerException e) {
+                System.out.println(e);
             }
-
-
-        }
-        catch (SQLException | FileNotFoundException e)
-        {
-            System.out.println("SQL error");
         }
 
     }

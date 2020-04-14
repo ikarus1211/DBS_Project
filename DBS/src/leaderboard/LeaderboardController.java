@@ -16,7 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import menu.MenuController;
-import menu.ModelTable;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -67,14 +67,14 @@ public class LeaderboardController implements Initializable {
     {
         String selected = lbChoiceBox.getValue().toString();
         System.out.println(selected);
-        if (selected.equals("Players"));
+        if (selected.equals("Players"))
             runPlayerFilter();
     }
     public void runPlayerFilter()
     {
         lbFirstCol.setText("Player");
-        lbSecondCol.setText("Best character");
-        lbThirdCol.setText("AVG Experience");
+        lbSecondCol.setText("AVG Experience");
+        lbThirdCol.setText("Best character");
         lbFourthCol.setText("NoCharacters");
         lbFifthCol.setText("Character XP");
         lbFirstCol.setCellValueFactory(new PropertyValueFactory<>("playerName"));
@@ -121,14 +121,14 @@ public class LeaderboardController implements Initializable {
     }
     public void incrementOffset()
     {
-        offset += 12;
+        offset += 100;
         oblist.clear();
         runPlayerFilter();
     }
 
     public void decrementOffset()
     {
-        offset -= 12;
+        offset -= 100;
         oblist.clear();
         runPlayerFilter();
     }

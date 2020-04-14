@@ -123,7 +123,7 @@ public class Character {
             decrement *= 2;
             counter++;
         }
-        double modulo = rawXp / decrement;
+        double modulo = (double) rawXp / decrement;
         return new MyResult(counter,modulo);
     }
 }

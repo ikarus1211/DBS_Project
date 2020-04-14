@@ -202,7 +202,7 @@ public class DatabaseConnector {
                         "GROUP BY player_name\n" +
                         "HAVING character_xp = (SELECT MAX(character_xp) FROM game_character WHERE player_owner = player_id)\n" +
                         "ORDER BY 3 DESC\n"+
-                        "LIMIT ?,12");
+                        "LIMIT ?,100");
         prepstatement.setInt(1,offset);
         ResultSet resultSet = prepstatement.executeQuery();
         return resultSet;

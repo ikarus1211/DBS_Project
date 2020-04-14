@@ -53,7 +53,7 @@ public class RegController {
                 a.setHeaderText("Account has been created successfully!");
                 a.show();
 
-                Parent root = FXMLLoader.load(getClass().getResource("/login/sample.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("/main/sample.fxml"));
                 Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 window.setScene(new Scene(root, 635, 400));
                 window.show();
