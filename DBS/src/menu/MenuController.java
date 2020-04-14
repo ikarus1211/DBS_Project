@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import character.Character;
 import characterCreation.CharacterCreationController;
+import leaderboard.LeaderboardController;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -65,6 +66,8 @@ public class MenuController implements Initializable {
     ProgressBar progBarLevel;
     @FXML
     ImageView image;
+    @FXML
+    Button menuLeader;
 
 
     ObservableList<ModelTable> oblist = FXCollections.observableArrayList();
@@ -108,7 +111,8 @@ public class MenuController implements Initializable {
         {
             while (resSet.next())
             {
-                oblist.add(new ModelTable(resSet.getString("character_name"), Integer.toString(resSet.getInt("character_xp")),
+                oblist.add(new ModelTable(resSet.getString("character_name"),
+                        Integer.toString(resSet.getInt("character_xp")),
                         Integer.toString(resSet.getInt("character_id"))));
             }
         }
@@ -129,8 +133,9 @@ public class MenuController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../characterCreation/character_creation.fxml"));
             Parent parent = loader.load();
-
             Scene scene = new Scene(parent);
+
+
 
             CharacterCreationController controller = loader.getController();
             controller.initId(personID);
@@ -226,6 +231,27 @@ public class MenuController implements Initializable {
         if (charClass.equals("Hunter"))
             return "DBS/src/img/hunter.png";
         return null;
+    }
+    public void changeToLeaderboard(javafx.event.ActionEvent event)
+    {
+        databaseConnector.connectionClose();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../leaderboard/leaderboard.fxml"));
+            Parent parent = loader.load();
+
+            Scene scene = new Scene(parent);
+
+
+            LeaderboardController controller = loader.getController();
+            controller.setPersonId(personID);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e)
+        {
+            System.out.println(e);
+        }
     }
 
 }

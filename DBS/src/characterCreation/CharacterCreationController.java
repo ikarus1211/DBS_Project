@@ -41,6 +41,9 @@ public class CharacterCreationController implements Initializable {
     {
         this.playerId = id;
     }
+
+
+
     public void characterCreation(javafx.event.ActionEvent event) {
         DatabaseConnector connector = new DatabaseConnector();
         connector.DatabseInit();

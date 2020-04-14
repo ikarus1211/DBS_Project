@@ -194,4 +194,17 @@ public class DatabaseConnector {
         }
         return 1;
     }
+    public ResultSet bestPlayers(int offset) throws SQLException {
+        prepstatement = connection
+                .prepareStatement("SELECT player_name,character_name,AVG(character_xp) as AvgExperience, no_characters as NoCharacters, character_xp, player_id\n" +
+                        "FROM game_character \n" +
+                        "INNER JOIN player ON player_owner = player_id \n" +
+                        "GROUP BY player_name\n" +
+                        "HAVING character_xp = (SELECT MAX(character_xp) FROM game_character WHERE player_owner = player_id)\n" +
+                        "ORDER BY 3 DESC\n"+
+                        "LIMIT ?,12");
+        prepstatement.setInt(1,offset);
+        ResultSet resultSet = prepstatement.executeQuery();
+        return resultSet;
+    }
 }
