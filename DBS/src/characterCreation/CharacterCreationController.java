@@ -1,6 +1,7 @@
 package characterCreation;
 
 import database.DatabaseConnector;
+import database.OrmAdapter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -51,7 +52,10 @@ public class CharacterCreationController implements Initializable {
         Character character = new Character(character_name_creation.getText(),0,0,class_id.getValue(),
                 race_id.getValue(),0,false, 0, playerId);
 
-        connector.addCharacter(character.getChar_name(),character.getChar_class(),
+        OrmAdapter ormAdapter = new OrmAdapter();
+        ormAdapter.addCharacter(character.getChar_name(),character.getHours(),character.getMoney()
+        ,character.getRace(),character.getChar_class(),character.getXp(),character.isGuild_leader(),playerId);
+       /* connector.addCharacter(character.getChar_name(),character.getChar_class(),
                 character.getRace(),playerId);
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../menu/main_screen.fxml"));
@@ -68,7 +72,7 @@ public class CharacterCreationController implements Initializable {
         } catch (IOException e)
         {
             System.out.println("IO error");
-        }
+        }*/
 
     }
     @FXML

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<persistence version="2.0"
+             xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+    <persistence-unit name="DBS_DaMA_Project" transaction-type="RESOURCE_LOCAL">
+
+        <!-- Define the class for Hibernate which implements JPA -->
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <!-- Define the object that should be persisted in the database -->
+        <class>src.database.ORMgamecharacter</class>
+        <class>src.database.ORMguild</class>
+        <class>src.database.ORMplayer</class>
+        <properties>
+            <!-- Driver for DB database -->
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+            <!-- URL for DB -->
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/dbs_projekt?characterEncoding=latin1" />
+            <!-- Username -->
+            <property name="javax.persistence.jdbc.user" value="root" />
+            <!-- Password -->
+            <property name="javax.persistence.jdbc.password" value="1999" />
+        </properties>
+    </persistence-unit>
+</persistence>

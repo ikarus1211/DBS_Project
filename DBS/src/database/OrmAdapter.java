@@ -1,0 +1,98 @@
+package database;
+
+import javax.persistence.*;
+
+public class OrmAdapter {
+    private final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
+            .createEntityManagerFactory("DBS_DaMA_Project");
+
+    public void addCharacter(String fname,int hours, int money, String race, String cClass,
+                             int xp, boolean guildL, int owner_id) {
+        // The EntityManager class allows operations such as create, read, update, delete
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        // Used to issue transactions on the EntityManager
+        EntityTransaction et = null;
+
+        try {
+            // Get transaction and start
+            et = em.getTransaction();
+            et.begin();
+
+            // Create and set values for new customer
+            ORMgamecharacter cust = new ORMgamecharacter();
+
+            cust.setcName(fname);
+            cust.setHours_played(hours);
+            cust.setMoney(money);
+            cust.setChar_race(race);
+            cust.setChar_class(cClass);
+            cust.setXp(xp);
+            cust.setGuild_leader(guildL);
+            cust.setGuild_id(null);
+            cust.setOwner_id(getPlayer(owner_id));
+
+            // Save the customer object
+            em.persist(cust);
+            et.commit();
+        } catch (Exception ex) {
+            // If there is an exception rollback changes
+            if (et != null) {
+                et.rollback();
+            }
+            ex.printStackTrace();
+        } finally {
+            // Close EntityManager
+            em.close();
+        }
+    }
+
+    public void getCharacter(int id) {
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+
+        // the lowercase c refers to the object
+        // :custID is a parameterized query thats value is set below
+        String query = "SELECT c FROM game_character c WHERE c.id = :custID";
+
+        // Issue the query and get a matching Customer
+        TypedQuery<ORMgamecharacter> tq = em.createQuery(query, ORMgamecharacter.class);
+        tq.setParameter("custID", id);
+
+        ORMgamecharacter cust = null;
+        try {
+            // Get matching customer object and output
+            cust = tq.getSingleResult();
+            System.out.println(cust.getcName() + " " + cust.getOwner_id());
+        }
+        catch(NoResultException ex) {
+            ex.printStackTrace();
+        }
+        finally {
+            em.close();
+        }
+    }
+    public ORMplayer getPlayer(int id) {
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+
+        // the lowercase c refers to the object
+        // :custID is a parameterized query thats value is set below
+        String query = "SELECT p FROM player p WHERE p.id = :pID";
+
+        // Issue the query and get a matching Customer
+        TypedQuery<ORMplayer> tq = em.createQuery(query, ORMplayer.class);
+        tq.setParameter("pID", id);
+
+        ORMplayer player = null;
+        try {
+            // Get matching customer object and output
+            player = tq.getSingleResult();
+            System.out.println(player.getpName() + " " + player.getpPassword());
+        }
+        catch(NoResultException ex) {
+            ex.printStackTrace();
+        }
+        finally {
+            em.close();
+        }
+        return player;
+    }
+}
