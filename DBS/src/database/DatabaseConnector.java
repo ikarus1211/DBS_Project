@@ -219,4 +219,18 @@ public class DatabaseConnector {
         prepstatement.setInt(1,offset);
         return prepstatement.executeQuery();
     }
+    public ResultSet getBestPlayers(int offset) throws SQLException
+    {
+        prepstatement = connection.
+                prepareStatement(" SELECT temp.player_name, temp.character_name, temp.race, temp.class, temp.game_money, temp.total_money, temp.hours_played\n" +
+                "FROM( SELECT p.player_name, c.hours_played, c.race, c.class, c.character_name, c.game_money,\n" +
+                        "sum(game_money) OVER (PARTITION BY player_id) total_money\n" +
+                        "FROM game_character c\n" +
+                        "INNER JOIN player p ON p.player_id = c.player_owner\n" +
+                    ") temp\n" +
+                "ORDER BY 6 DESC, 1 DESC, 5 DESC\n" +
+                "LIMIT ?,100");
+        prepstatement.setInt(1,offset);
+        return prepstatement.executeQuery();
+    }
 }
