@@ -17,6 +17,7 @@ import menu.MenuController;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class CharacterCreationController implements Initializable {
@@ -45,7 +46,7 @@ public class CharacterCreationController implements Initializable {
 
 
 
-    public void characterCreation(javafx.event.ActionEvent event) {
+    public void characterCreation(javafx.event.ActionEvent event) throws SQLException {
         DatabaseConnector connector = new DatabaseConnector();
         connector.DatabseInit();
 
@@ -55,8 +56,9 @@ public class CharacterCreationController implements Initializable {
         OrmAdapter ormAdapter = new OrmAdapter();
         ormAdapter.addCharacter(character.getChar_name(),character.getHours(),character.getMoney()
         ,character.getRace(),character.getChar_class(),character.getXp(),character.isGuild_leader(),playerId);
-       /* connector.addCharacter(character.getChar_name(),character.getChar_class(),
-                character.getRace(),playerId);
+
+        connector.updateChar(playerId);
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../menu/main_screen.fxml"));
             Parent parent = loader.load();
@@ -72,7 +74,7 @@ public class CharacterCreationController implements Initializable {
         } catch (IOException e)
         {
             System.out.println("IO error");
-        }*/
+        }
 
     }
     @FXML

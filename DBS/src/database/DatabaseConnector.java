@@ -146,19 +146,12 @@ public class DatabaseConnector {
         }
     }
 
-////////////////////
-    public int addCharacter1(String charName, String charClass, String charRace, int id) throws SQLException
+
+    public int updateChar(int id) throws SQLException
     {
         PreparedStatement prepstatement;
         connection.setAutoCommit(false);
         try {
-            prepstatement = connection.prepareStatement("INSERT INTO game_character " +
-                    "(character_name,character_xp,class,race,game_money,player_owner) VALUES (?,0,?,?,0,?)");
-            prepstatement.setString(1, charName);
-            prepstatement.setString(2, charClass);
-            prepstatement.setString(3, charRace);
-            prepstatement.setInt(4, id);
-            prepstatement.executeUpdate();
 
             prepstatement = connection.prepareStatement("UPDATE player SET no_characters=(no_characters+1)" +
                     "WHERE player_id = ?");
@@ -169,7 +162,7 @@ public class DatabaseConnector {
         } catch (SQLException e)
         {
             connection.rollback();
-            System.out.print("Failed to add user");
+            System.out.print("Failed to update user");
             e.printStackTrace();
             connection.setAutoCommit(true);
             return -1;
@@ -178,7 +171,7 @@ public class DatabaseConnector {
         prepstatement.close();
         return 1;
     }
-//////////////////////////
+
 
 
 
@@ -528,25 +521,6 @@ public class DatabaseConnector {
         prepstatement.close();
         connection.setAutoCommit(true);
     }
-    /*
-    public int getMoney(int id) throws SQLException{
-        int money = 0;
-        connection.setAutoCommit(false);
-        try {
-            prepstatement = connection.prepareStatement("SELECT game_money FROM game_character WHERE character_id = ?");
-            prepstatement.setInt(1, id);
-            returnedValue = prepstatement.executeQuery();
-            while (returnedValue.next()) {
-                money = returnedValue.getInt(1);
-            }
-            connection.commit();
-        } catch (SQLException e) {
-            connection.rollback();
-        }
-        connection.setAutoCommit(true);
-        prepstatement.close();
-        return money;
-    }*/
 
     public int addQuest(int id_q, int c_id) throws SQLException {
         int cnt = 0;
