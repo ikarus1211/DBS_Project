@@ -72,7 +72,7 @@ public class RegController {
 
     @FXML
     public void back(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/login/sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/main/sample.fxml"));
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setScene(new Scene(root, 635, 400));
         window.show();
