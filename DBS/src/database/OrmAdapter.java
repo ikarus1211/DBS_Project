@@ -19,20 +19,20 @@ public class OrmAdapter {
             et.begin();
 
             // Create and set values for new customer
-            ORMgamecharacter cust = new ORMgamecharacter();
+            ORMgamecharacter character = new ORMgamecharacter();
 
-            cust.setcName(fname);
-            cust.setHours_played(hours);
-            cust.setMoney(money);
-            cust.setChar_race(race);
-            cust.setChar_class(cClass);
-            cust.setXp(xp);
-            cust.setGuild_leader(guildL);
-            cust.setGuild_id(null);
-            cust.setOwner_id(getPlayer(owner_id));
+            character.setcName(fname);
+            character.setHours_played(hours);
+            character.setMoney(money);
+            character.setChar_race(race);
+            character.setChar_class(cClass);
+            character.setXp(xp);
+            character.setGuild_leader(guildL);
+            character.setGuild_id(null);
+            character.setOwner_id(getPlayer(owner_id));
 
             // Save the customer object
-            em.persist(cust);
+            em.persist(character);
             et.commit();
         } catch (Exception ex) {
             // If there is an exception rollback changes

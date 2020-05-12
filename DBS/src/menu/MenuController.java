@@ -1,8 +1,9 @@
 package menu;
 
 import database.DatabaseConnector;
-import database.ORMgamecharacter;
-import database.OrmAdapter;
+import guild.GuildController;
+import inventory.InventoryController;
+import inventory.ModelTab;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,6 +20,7 @@ import javafx.stage.Stage;
 import character.Character;
 import characterCreation.CharacterCreationController;
 import leaderboard.LeaderboardController;
+import quest.QuestController;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,6 +28,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MenuController implements Initializable {
@@ -71,14 +74,15 @@ public class MenuController implements Initializable {
     @FXML
     Button menuLeader;
 
-
+    Alert a = new Alert(Alert.AlertType.NONE);
     ObservableList<ModelTable> oblist = FXCollections.observableArrayList();
     DatabaseConnector databaseConnector = new DatabaseConnector();
 
     private int offset;
     private int personID;
     private int char_id;
-    private ResultSet resultSet;
+    private int guild_id;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         databaseConnector.DatabseInit();
@@ -93,34 +97,31 @@ public class MenuController implements Initializable {
     }
     private void getCharacters(int id)
     {
+        ArrayList<ArrayList<String>> aList = null;
         try {
-            resultSet = databaseConnector.getCharacters(id,offset);
+
+            aList = databaseConnector.getCharacters(id,offset);
+
         } catch (SQLException e)
         {
             System.out.println("Error while searching for characters");
         }
 
-        fillTable(resultSet);
+        fillTable(aList);
     }
 
-    private void fillTable(ResultSet resSet)
+    private void fillTable(ArrayList<ArrayList<String>> aList)
     {
-
         name_id.setCellValueFactory(new PropertyValueFactory<>("name"));
         level_id.setCellValueFactory(new PropertyValueFactory<>("level"));
         id_table.setCellValueFactory(new PropertyValueFactory<>("id"));
-        try
-        {
-            while (resSet.next())
-            {
-                oblist.add(new ModelTable(resSet.getString("character_name"),
-                        Integer.toString(resSet.getInt("character_xp")),
-                        Integer.toString(resSet.getInt("character_id"))));
-            }
-        }
-        catch (SQLException e)
-        {
 
+        if (aList != null) {
+            for (int k = 0; k < aList.size(); k++) {
+                oblist.add(new ModelTable(aList.get(k).get(1),
+                        aList.get(k).get(3),
+                        aList.get(k).get(0)));
+            }
         }
         if (oblist == null)
             System.out.println("Prazdna tabulka");
@@ -152,22 +153,123 @@ public class MenuController implements Initializable {
 
     }
 
-    public void deleteCharacter() {
-        databaseConnector.deleteCharacter(char_id);
-        oblist.clear();
-        getCharacters(personID);
+    public void switchToQuests(javafx.event.ActionEvent event) {
+
+        if (char_id == 0) {
+            a.setAlertType(Alert.AlertType.INFORMATION);
+            a.setHeaderText("Choose a character!");
+            a.show();
+            return;
+        }
+
+        databaseConnector.connectionClose();
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../quest/quest.fxml"));
+            Parent parent = loader.load();
+            Scene scene = new Scene(parent);
+
+            QuestController controller = loader.getController();
+            controller.initId(char_id, personID);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e)
+        {
+            System.out.println(e);
+            e.printStackTrace();
+        }
+
+    }
+
+    public void switchToInventory(javafx.event.ActionEvent event) {
+        if (char_id == 0) {
+            a.setAlertType(Alert.AlertType.INFORMATION);
+            a.setHeaderText("Choose a character!");
+            a.show();
+            return;
+        }
+
+        databaseConnector.connectionClose();
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../inventory/inventory.fxml"));
+            Parent parent = loader.load();
+            Scene scene = new Scene(parent);
+
+            InventoryController controller = loader.getController();
+            controller.initId(char_id, personID);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e)
+        {
+            System.out.println("IO error");
+        }
+    }
+
+
+    public void switchToGuild(javafx.event.ActionEvent event) {
+        if (char_id == 0) {
+            a.setAlertType(Alert.AlertType.INFORMATION);
+            a.setHeaderText("Choose a character!");
+            a.show();
+            return;
+        }
+
+        if (guild_id == 0) {
+            a.setAlertType(Alert.AlertType.INFORMATION);
+            a.setHeaderText("Character doesn't have a guild!");
+            a.show();
+            return;
+        }
+
+        databaseConnector.connectionClose();
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../guild/guild.fxml"));
+            Parent parent = loader.load();
+            Scene scene = new Scene(parent);
+
+            GuildController controller = loader.getController();
+            controller.initId(char_id, guild_id, personID);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e)
+        {
+            System.out.println(e);
+        }
+    }
+
+    public void deleteCharacter() throws SQLException {
+
+        if (personID == databaseConnector.checkCharacterOwner(char_id)) {
+            databaseConnector.deleteCharacter(char_id, personID);
+            oblist.clear();
+            getCharacters(personID);
+        } else {
+            a.setAlertType(Alert.AlertType.INFORMATION);
+            a.setHeaderText("You cannot delete someone else's character!");
+            a.show();
+        }
+
     }
 
     public void searchInDatabase()
     {
 
         try {
-            resultSet = databaseConnector.searchInTable(searchBar.getText());
+            ArrayList<ArrayList<String>> aList = databaseConnector.searchInTable(searchBar.getText());
             oblist.clear();
-            while (resultSet.next() )
-            {
-                oblist.add(new ModelTable(resultSet.getString("character_name"), Integer.toString(resultSet.getInt("character_xp")),
-                        Integer.toString(resultSet.getInt("character_id"))));
+
+            for (int k = 0; k < aList.size(); k++) {
+                oblist.add(new ModelTable(aList.get(k).get(1),
+                        aList.get(k).get(3),
+                        aList.get(k).get(0)));
             }
         } catch (SQLException e)
         {
@@ -191,28 +293,29 @@ public class MenuController implements Initializable {
 
     public void detailedView()
     {
-        ResultSet newResultSet;
         ModelTable returned = tabView.getSelectionModel().getSelectedItem();
 
         if (returned != null) {
             try {
-                newResultSet = databaseConnector.getOneCharacter(Integer.parseInt(returned.id));
-                if (newResultSet.next()) {
-                    char_id = newResultSet.getInt("character_id");
-                    char_name.setText(newResultSet.getString("character_name"));
-                    money_value.setText(Integer.toString(newResultSet.getInt("game_money")));
-                    guild_name.setText(Integer.toString(newResultSet.getInt("guild_id")));
-                    race_name.setText(newResultSet.getString("race"));
-                    Character calc = new Character();
-                    MyResult retValue = calc.calculateLevel(newResultSet.getInt("character_xp"));
-                    level_number.setText(Integer.toString(retValue.getFinalLevel()));
-                    progBarLevel.setProgress(retValue.getExp());
-                    FileInputStream imageStream = new FileInputStream(choseImage(newResultSet.getString("class")));
-                    Image im = new Image(imageStream);
-                    image.setImage(im);
+                ArrayList<ArrayList<String>> aList = databaseConnector.getOneCharacter(Integer.parseInt(returned.id));
 
-                }
+                char_id = Integer.parseInt(aList.get(0).get(0));
+                char_name.setText(aList.get(0).get(1));
+                money_value.setText(aList.get(0).get(6));
+                if (aList.get(0).get(8) != null) {
+                    guild_id = Integer.parseInt(aList.get(0).get(8));
+                    guild_name.setText(databaseConnector.getGuildName(Integer.parseInt(aList.get(0).get(8))));
+                } else guild_name.setText("None");
+                race_name.setText(aList.get(0).get(5));
 
+                Character calc = new Character();
+                MyResult retValue = calc.calculateLevel(Integer.parseInt(aList.get(0).get(3)));
+                level_number.setText(Integer.toString(retValue.getFinalLevel()));
+                progBarLevel.setProgress(retValue.getExp());
+
+                FileInputStream imageStream = new FileInputStream(choseImage(aList.get(0).get(4)));
+                Image im = new Image(imageStream);
+                image.setImage(im);
 
             } catch (SQLException | FileNotFoundException | NullPointerException e) {
                 System.out.println(e);
@@ -220,6 +323,8 @@ public class MenuController implements Initializable {
         }
 
     }
+
+
     private String choseImage(String charClass)
     {
         if (charClass.equals("Warrior"))
@@ -234,6 +339,7 @@ public class MenuController implements Initializable {
             return "DBS/src/img/hunter.png";
         return null;
     }
+
     public void changeToLeaderboard(javafx.event.ActionEvent event)
     {
         databaseConnector.connectionClose();

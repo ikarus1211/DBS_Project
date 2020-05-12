@@ -16,12 +16,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import menu.MenuController;
-import menu.ModelTable;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class LeaderboardController implements Initializable {
@@ -83,8 +82,8 @@ public class LeaderboardController implements Initializable {
     public void runPlayerFilter()
     {
         lbFirstCol.setText("Player");
-        lbSecondCol.setText("Best character");
-        lbThirdCol.setText("AVG Experience");
+        lbSecondCol.setText("AVG Experience");
+        lbThirdCol.setText("Best character");
         lbFourthCol.setText("NoCharacters");
         lbFifthCol.setText("Character XP");
         lbFirstCol.setCellValueFactory(new PropertyValueFactory<>("playerName"));
@@ -92,15 +91,19 @@ public class LeaderboardController implements Initializable {
         lbThirdCol.setCellValueFactory(new PropertyValueFactory<>("bestCharacter"));
         lbFourthCol.setCellValueFactory(new PropertyValueFactory<>("numberCharacter"));
         lbFifthCol.setCellValueFactory(new PropertyValueFactory<>("bestExperience"));
+
         try {
-            ResultSet resultSet = connector.bestPlayers(offset);
-            while (resultSet.next())
-            {
-                oblist.add(new LbModelTable(resultSet.getString("player_name"),
-                        resultSet.getString("character_name"),
-                        resultSet.getFloat("AvgExperience"),
-                        resultSet.getInt("NoCharacters"),
-                        resultSet.getInt("character_xp")));
+            ArrayList<ArrayList<String>> aList = connector.bestPlayers(offset);
+            if (aList != null) {
+
+                for (int i = 0; i < aList.size(); i++) {
+                    oblist.add(new LbModelTable(aList.get(i).get(0),
+                            aList.get(i).get(1),
+                            Float.valueOf(aList.get(i).get(2)),
+                            Integer.parseInt(aList.get(i).get(3)),
+                            Integer.parseInt(aList.get(i).get(4))));
+
+                }
             }
         }catch (SQLException e)
         {
@@ -108,6 +111,7 @@ public class LeaderboardController implements Initializable {
         }
         lbTable.setItems(oblist);
     }
+
 
     public void runGuildsFilter(){
         lbFirstCol.setText("Guild's name");
@@ -123,21 +127,24 @@ public class LeaderboardController implements Initializable {
         lbFifthCol.setCellValueFactory(new PropertyValueFactory<>("bestExperience"));
 
         try {
-            ResultSet resultSet = connector.bestGuild(offset);
-            while (resultSet.next())
-            {
-                oblist.add(new LbModelTable(resultSet.getString("Guild_Name"),
-                        "",
-                        resultSet.getInt("no_players"),
-                        resultSet.getInt("AMOUNT_OF_GOLD"),
-                        0));
+            ArrayList<ArrayList<String>> aList = connector.bestGuild(offset);
+
+            if (aList != null) {
+                for (int i = 0; i < aList.size(); i++) {
+                    oblist.add(new LbModelTable(aList.get(i).get(0),
+                            "",
+                            Float.valueOf(aList.get(i).get(1)),
+                            Integer.parseInt(aList.get(i).get(2)),
+                            0));
+                }
             }
-        }catch (SQLException e)
+        }catch(SQLException e)
         {
             System.out.println(e);
         }
         lbTable.setItems(oblist);
     }
+
 
     public void runBestPlayerFilter(){
         lbFirstCol.setText("Player name");
@@ -153,14 +160,16 @@ public class LeaderboardController implements Initializable {
         lbFifthCol.setCellValueFactory(new PropertyValueFactory<>("bestExperience"));
 
         try {
-            ResultSet resultSet = connector.getBestPlayers(offset);
-            while (resultSet.next())
-            {
-                oblist.add(new LbModelTable(resultSet.getString("player_name"),
-                        resultSet.getString("character_name"),
-                        resultSet.getFloat("hours_played"),
-                        resultSet.getInt("game_money"),
-                        resultSet.getInt("total_money")));
+            ArrayList<ArrayList<String>> aList = connector.getBestPlayers(offset);
+
+            if (aList != null) {
+                for (int i = 0; i < aList.size(); i++) {
+                    oblist.add(new LbModelTable(aList.get(i).get(0),
+                            aList.get(i).get(1),
+                            Float.valueOf(aList.get(i).get(6)),
+                            Integer.parseInt(aList.get(i).get(4)),
+                            Integer.parseInt(aList.get(i).get(5))));
+                }
             }
         }catch (SQLException e)
         {
