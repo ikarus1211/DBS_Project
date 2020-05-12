@@ -32,6 +32,7 @@ public class CharacterCreationController implements Initializable {
     TextField character_name_creation;
 
     private int playerId;
+    private int serverID;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         race_id.getItems().addAll("Demon","Orc","Goblin","Human");
@@ -39,9 +40,10 @@ public class CharacterCreationController implements Initializable {
 
     }
 
-    public void initId(int id)
+    public void initId(int id, int serverID)
     {
         this.playerId = id;
+        this.serverID = serverID;
     }
 
 
@@ -66,7 +68,7 @@ public class CharacterCreationController implements Initializable {
             Scene scene = new Scene(parent);
 
             MenuController controller = loader.getController();
-            controller.initData(playerId);
+            controller.initData(playerId, serverID);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
@@ -86,7 +88,7 @@ public class CharacterCreationController implements Initializable {
             Scene scene = new Scene(parent);
 
             MenuController controller = loader.getController();
-            controller.initData(playerId);
+            controller.initData(playerId, serverID);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);

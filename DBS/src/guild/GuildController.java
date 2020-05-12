@@ -28,14 +28,16 @@ public class GuildController {
     private int char_id;
     private int guild_id;
     private int personId;
+    private int serverID;
 
     private DatabaseConnector databaseConnector = new DatabaseConnector();
 
-    public void initId(int c_id, int g_id, int p_id)
+    public void initId(int c_id, int g_id, int p_id, int serverID)
     {
         this.char_id = c_id;
         this.guild_id = g_id;
         this.personId = p_id;
+        this.serverID = serverID;
         databaseConnector.DatabseInit();
         showGuild();
     }
@@ -65,7 +67,7 @@ public class GuildController {
             Scene scene = new Scene(parent);
 
             MenuController controller = loader.getController();
-            controller.initData(personId);
+            controller.initData(personId, serverID);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);

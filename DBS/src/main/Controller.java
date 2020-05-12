@@ -11,6 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import main.Arthur;
 import menu.MenuController;
 
@@ -61,8 +62,9 @@ public class Controller{
 
 
         Arthur arthur = new Arthur();
-        int id = arthur.loginUser(username.getText(), pass.getText());
-
+        Pair<Integer,Integer> pair = arthur.loginUser(username.getText(), pass.getText());
+        int id = pair.getKey();
+        int serverId = pair.getValue();
         if (id > 0)
         {
 
@@ -72,7 +74,7 @@ public class Controller{
             Scene scene = new Scene(parent);
 
             MenuController controller = loader.getController();
-            controller.initData(id);
+            controller.initData(id,serverId);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);

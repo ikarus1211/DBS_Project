@@ -1,5 +1,7 @@
 package database;
 
+import javafx.util.Pair;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +48,7 @@ public class DatabaseConnector {
      * Function finds user in database and then evaluate if password is matching.
      * If password are matching, it return value corresponding to it.
      */
-    public int checkUser(String userName, String password)
+    public Pair<Integer,Integer> checkUser(String userName, String password)
     {
         // In case connection is not established
         if(connection == null) {
@@ -56,7 +58,8 @@ public class DatabaseConnector {
         // Try to get user from table
         try {
             prepstatement = connection
-                    .prepareStatement("SELECT * FROM player WHERE player_name = ?");
+                    .prepareStatement("SELECT * FROM player INNER JOIN player_server ON pid = player_id\n" +
+                            "INNER JOIN game_server ON server_id = sid WHERE player_name = ?");
             prepstatement.setString(1, userName);
             returnedValue = prepstatement.executeQuery();
 
@@ -65,17 +68,18 @@ public class DatabaseConnector {
             if (returnedValue.next()) {
                 if (password.equals(returnedValue.getString("player_password"))) {
       //              System.out.print("login Successful");
-                    return returnedValue.getInt("player_id");
+
+                    return new Pair<>(returnedValue.getInt("player_id"), returnedValue.getInt("server_id"));
                 } else {
                     System.out.print("login failed!");
-                    return 0;
+                    return new Pair<>(0,0);
                 }
             } else
-                return 0;
+                return new Pair<>(0,0);
         }
         catch (SQLException e) {
             e.printStackTrace();
-            return -1;
+            return new Pair<>(-1,-1);
         }
     }
 
@@ -179,14 +183,16 @@ public class DatabaseConnector {
 
 
 
-    public ArrayList<ArrayList<String>> getCharacters(int id ,int offset) throws SQLException {
+    public ArrayList<ArrayList<String>> getCharacters(int id, int serverID, int offset) throws SQLException {
         ArrayList<ArrayList<String>> a = null;
         connection.setAutoCommit(false);
         try {
             prepstatement = connection
-                    .prepareStatement("SELECT * FROM game_character WHERE player_owner = ? LIMIT ?,12");
+                    .prepareStatement("SELECT * FROM game_character INNER JOIN player_server ON pid = player_id\n" +
+                            "INNER JOIN game_server ON server_id = sid WHERE player_owner = ? AND server_id = ? LIMIT ?,12");
             prepstatement.setInt(1, id);
-            prepstatement.setInt(2, offset);
+            prepstatement.setInt(2, serverID);
+            prepstatement.setInt(3, offset);
             returnedValue = prepstatement.executeQuery();
             a = rsToString(returnedValue);
             connection.commit();
@@ -198,13 +204,17 @@ public class DatabaseConnector {
         return  a;
     }
 
-    public ArrayList<ArrayList<String>> searchInTable(String searchValue) throws SQLException {
+    public ArrayList<ArrayList<String>> searchInTable(String searchValue, int serverID) throws SQLException {
         ArrayList<ArrayList<String>> a = null;
         connection.setAutoCommit(false);
         try {
             prepstatement = connection
-                    .prepareStatement("SELECT * FROM game_character WHERE character_name = ?");
+                    .prepareStatement("SELECT * FROM game_character INNER JOIN player ON player_owner = player_id \n" +
+                            "INNER JOIN player_server ON pid = player_id\n" +
+                            "INNER JOIN game_server ON server_id = sid\n" +
+                            "WHERE character_name = ? AND server_id = ?");
             prepstatement.setString(1, searchValue);
+            prepstatement.setInt(2, serverID);
             returnedValue = prepstatement.executeQuery();
             a = rsToString(returnedValue);
             connection.commit();
@@ -289,19 +299,21 @@ public class DatabaseConnector {
     }
 
 
-    public ArrayList<ArrayList<String>> bestPlayers(int offset) throws SQLException {
+    public ArrayList<ArrayList<String>> bestPlayers(int offset, int serverID) throws SQLException {
         ArrayList<ArrayList<String>> a = null;
         connection.setAutoCommit(false);
         try {
             prepstatement = connection
-                    .prepareStatement("SELECT player_name,character_name,AVG(character_xp) as AvgExperience, no_characters as NoCharacters, character_xp, player_id\n" +
+                    .prepareStatement("SELECT player_name,character_name,AVG(character_xp) as AvgExperience, no_characters as NoCharacters, character_xp, player_id, server_id\n" +
                             "FROM game_character \n" +
-                            "INNER JOIN player ON player_owner = player_id \n" +
+                            "INNER JOIN player ON player_owner = player_id INNER JOIN player_server ON pid = player_id\n" +
+                            "INNER JOIN game_server ON server_id = sid \n" +
                             "GROUP BY player_name\n" +
-                            "HAVING character_xp = (SELECT MAX(character_xp) FROM game_character WHERE player_owner = player_id)\n" +
+                            "HAVING server_id = ? AND character_xp = (SELECT MAX(character_xp) FROM game_character WHERE player_owner = player_id)\n" +
                             "ORDER BY 3 DESC\n"+
                             "LIMIT ?,100");
-            prepstatement.setInt(1,offset);
+            prepstatement.setInt(1,serverID);
+            prepstatement.setInt(2,offset);
             returnedValue = prepstatement.executeQuery();
             a = rsToString(returnedValue);
             connection.commit();
@@ -314,18 +326,21 @@ public class DatabaseConnector {
     }
 
 
-    public ArrayList<ArrayList<String>> bestGuild(int offset) throws SQLException {
+    public ArrayList<ArrayList<String>> bestGuild(int offset, int serverID) throws SQLException {
         ArrayList<ArrayList<String>> a = null;
         connection.setAutoCommit(false);
         try {
             prepstatement = connection
-                    .prepareStatement("SELECT guild_name as Guild_Name, number_of_players as no_players, SUM(game_money) as AMOUNT_OF_GOLD\n" +
+                    .prepareStatement("SELECT guild_name as Guild_Name, number_of_players as no_players, SUM(game_money) as AMOUNT_OF_GOLD, server_id\n" +
                             "FROM guild g\n" +
-                            "INNER JOIN game_character c ON c.guild_id = g.guild_id\n" +
-                            "group by guild_name\n" +
+                            "INNER JOIN game_character c ON c.guild_id = g.guild_id  INNER JOIN player ON player_owner = player_id\n" +
+                            "INNER JOIN player_server ON pid = player_id\n" +
+                            "INNER JOIN game_server ON server_id = sid \n" +
+                            "group by guild_name HAVING server_id = ?\n" +
                             "order by 3 DESC\n" +
                             "LIMIT ?,100");
-            prepstatement.setInt(1,offset);
+            prepstatement.setInt(1,serverID);
+            prepstatement.setInt(2,offset);
             returnedValue = prepstatement.executeQuery();
             a = rsToString(returnedValue);
             connection.commit();
@@ -339,20 +354,23 @@ public class DatabaseConnector {
 
 
 
-    public ArrayList<ArrayList<String>> getBestPlayers(int offset) throws SQLException {
+    public ArrayList<ArrayList<String>> getBestPlayers(int offset, int serverID) throws SQLException {
         ArrayList<ArrayList<String>> a = null;
         connection.setAutoCommit(false);
         try {
             prepstatement = connection.
-                    prepareStatement(" SELECT temp.player_name, temp.character_name, temp.race, temp.class, temp.game_money, temp.total_money, temp.hours_played\n" +
-                            "FROM( SELECT p.player_name, c.hours_played, c.race, c.class, c.character_name, c.game_money,\n" +
+                    prepareStatement(" SELECT temp.player_name, temp.character_name, temp.race, temp.class, temp.game_money, temp.total_money, temp.hours_played, server_id\n" +
+                            "FROM( SELECT p.player_name, c.hours_played, c.race, c.class, c.character_name, server_id, c.game_money,\n" +
                             "sum(game_money) OVER (PARTITION BY player_id) total_money\n" +
                             "FROM game_character c\n" +
-                            "INNER JOIN player p ON p.player_id = c.player_owner\n" +
+                            "INNER JOIN player p ON p.player_id = c.player_owner INNER JOIN player_server ON pid = player_id\n" +
+                            "INNER JOIN game_server ON server_id = sid \n" +
                             ") temp\n" +
+                            "WHERE server_id = ?\n" +
                             "ORDER BY 6 DESC, 1 DESC, 5 DESC\n" +
                             "LIMIT ?,100");
-            prepstatement.setInt(1,offset);
+            prepstatement.setInt(1,serverID);
+            prepstatement.setInt(2,offset);
             returnedValue = prepstatement.executeQuery();
             a = rsToString(returnedValue);
             connection.commit();

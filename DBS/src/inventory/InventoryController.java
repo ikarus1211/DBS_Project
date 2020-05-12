@@ -45,11 +45,13 @@ public class InventoryController {
     private ObservableList<ModelTab> oblist = FXCollections.observableArrayList();
     private Alert a = new Alert(Alert.AlertType.NONE);
     private List<Integer> lst = null;
+    private int serverID;
 
-    public void initId(int c_id, int p_id) {
+    public void initId(int c_id, int p_id, int serverID) {
         itemId = 0;
         this.personId = p_id;
         this.char_id = c_id;
+        this.serverID = serverID;
         getItems(c_id);
     }
 
@@ -111,7 +113,7 @@ public class InventoryController {
             Scene scene = new Scene(parent);
 
             MenuController controller = loader.getController();
-            controller.initData(personId);
+            controller.initData(personId, serverID);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);

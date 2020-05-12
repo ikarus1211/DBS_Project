@@ -82,6 +82,7 @@ public class MenuController implements Initializable {
     private int personID;
     private int char_id;
     private int guild_id;
+    private int serverID;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -89,9 +90,10 @@ public class MenuController implements Initializable {
         offset = 0;
 
     }
-    public void initData(int id)
+    public void initData(int id, int serverID)
     {
         this.personID = id;
+        this.serverID = serverID;
         getCharacters(id);
 
     }
@@ -100,7 +102,7 @@ public class MenuController implements Initializable {
         ArrayList<ArrayList<String>> aList = null;
         try {
 
-            aList = databaseConnector.getCharacters(id,offset);
+            aList = databaseConnector.getCharacters(id,serverID,offset);
 
         } catch (SQLException e)
         {
@@ -141,7 +143,7 @@ public class MenuController implements Initializable {
 
 
             CharacterCreationController controller = loader.getController();
-            controller.initId(personID);
+            controller.initId(personID, serverID);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
@@ -170,7 +172,7 @@ public class MenuController implements Initializable {
             Scene scene = new Scene(parent);
 
             QuestController controller = loader.getController();
-            controller.initId(char_id, personID);
+            controller.initId(char_id, personID, serverID);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
@@ -199,7 +201,7 @@ public class MenuController implements Initializable {
             Scene scene = new Scene(parent);
 
             InventoryController controller = loader.getController();
-            controller.initId(char_id, personID);
+            controller.initId(char_id, personID, serverID);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
@@ -234,7 +236,7 @@ public class MenuController implements Initializable {
             Scene scene = new Scene(parent);
 
             GuildController controller = loader.getController();
-            controller.initId(char_id, guild_id, personID);
+            controller.initId(char_id, guild_id, personID, serverID);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
@@ -263,7 +265,7 @@ public class MenuController implements Initializable {
     {
 
         try {
-            ArrayList<ArrayList<String>> aList = databaseConnector.searchInTable(searchBar.getText());
+            ArrayList<ArrayList<String>> aList = databaseConnector.searchInTable(searchBar.getText(),serverID);
             oblist.clear();
 
             for (int k = 0; k < aList.size(); k++) {
@@ -351,7 +353,7 @@ public class MenuController implements Initializable {
 
 
             LeaderboardController controller = loader.getController();
-            controller.setPersonId(personID);
+            controller.setPersonId(personID, serverID);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);

@@ -6,7 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+import javafx.util.Pair;
 
 
 public class Arthur extends Application{
@@ -26,12 +26,12 @@ public class Arthur extends Application{
 
     }
 
-    public int loginUser(String username, String password) {
+    public Pair<Integer, Integer> loginUser(String username, String password) {
         DatabaseConnector databaseConnector = new DatabaseConnector();
         databaseConnector.DatabseInit();
-        int flag = databaseConnector.checkUser(username, password);
+        Pair<Integer,Integer> pair = databaseConnector.checkUser(username, password);
         databaseConnector.connectionClose();
-        return flag;
+        return pair;
     }
 
 

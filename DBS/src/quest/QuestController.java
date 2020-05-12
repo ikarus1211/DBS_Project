@@ -64,12 +64,14 @@ public class QuestController {
     private String rs_name = null;
     private String new_quest;
     private int selected_quest_id;
+    private int serverID;
 
 
-    public void initId(int c_id, int p_id)
+    public void initId(int c_id, int p_id, int serverID)
     {
         this.char_id = c_id;
         this.personId = p_id;
+        this.serverID = serverID;
         getQuests(c_id);
     }
 
@@ -125,7 +127,7 @@ public class QuestController {
             Scene scene = new Scene(parent);
 
             MenuController controller = loader.getController();
-            controller.initData(personId);
+            controller.initData(personId,serverID);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);

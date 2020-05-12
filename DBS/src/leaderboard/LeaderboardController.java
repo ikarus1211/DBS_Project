@@ -45,12 +45,15 @@ public class LeaderboardController implements Initializable {
     RadioButton radioSer1;
     @FXML
     RadioButton radioSer2;
+    @FXML
+    Button searchButton;
 
 
     private int personId;
     private database.DatabaseConnector connector;
     private int offset;
     private int server = 1;
+    private int serverID;
     ObservableList<LbModelTable> oblist = FXCollections.observableArrayList();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -59,22 +62,16 @@ public class LeaderboardController implements Initializable {
         connector.DatabseInit();
         offset = 0;
     }
-
-    public void setPersonId(int id)
+    public void filter()
     {
-        this.personId = id;
-    }
-
-    public void selectFilter()
-    {
+        offset = 0;
+        oblist.clear();
         if (radioSer2.isSelected()) {
             server = 2;
         }
         else server = 1;
-        String selected = lbChoiceBox.getValue().toString();
-        offset = 0;
-    //    System.out.println(selected);
-        oblist.clear();
+        String selected = selectFilter();
+
         if (selected.equals("Players")) {
             runPlayerFilter();
         }
@@ -84,6 +81,21 @@ public class LeaderboardController implements Initializable {
         {
             runBestPlayerFilter();
         }
+
+    }
+    public void setPersonId(int id, int serverID)
+    {
+        this.personId = id;
+        this.serverID = serverID;
+    }
+
+    public String selectFilter()
+    {
+
+        String selected = lbChoiceBox.getValue().toString();
+        if (selected == null)
+            return "Players";
+        return selected;
     }
 
     public void runPlayerFilter()
@@ -100,7 +112,7 @@ public class LeaderboardController implements Initializable {
         lbFifthCol.setCellValueFactory(new PropertyValueFactory<>("bestExperience"));
 
         try {
-            ArrayList<ArrayList<String>> aList = connector.bestPlayers(offset);
+            ArrayList<ArrayList<String>> aList = connector.bestPlayers(offset, server);
             if (aList != null) {
 
                 for (int i = 0; i < aList.size(); i++) {
@@ -134,7 +146,7 @@ public class LeaderboardController implements Initializable {
         lbFifthCol.setCellValueFactory(new PropertyValueFactory<>("bestExperience"));
 
         try {
-            ArrayList<ArrayList<String>> aList = connector.bestGuild(offset);
+            ArrayList<ArrayList<String>> aList = connector.bestGuild(offset, server);
 
             if (aList != null) {
                 for (int i = 0; i < aList.size(); i++) {
@@ -167,7 +179,7 @@ public class LeaderboardController implements Initializable {
         lbFifthCol.setCellValueFactory(new PropertyValueFactory<>("bestExperience"));
 
         try {
-            ArrayList<ArrayList<String>> aList = connector.getBestPlayers(offset);
+            ArrayList<ArrayList<String>> aList = connector.getBestPlayers(offset, server);
 
             if (aList != null) {
                 for (int i = 0; i < aList.size(); i++) {
@@ -195,7 +207,7 @@ public class LeaderboardController implements Initializable {
 
 
             MenuController controller = loader.getController();
-            controller.initData(personId);
+            controller.initData(personId, serverID);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
