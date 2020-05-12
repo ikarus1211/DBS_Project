@@ -528,7 +528,7 @@ public class DatabaseConnector {
         prepstatement.close();
         connection.setAutoCommit(true);
     }
-
+    /*
     public int getMoney(int id) throws SQLException{
         int money = 0;
         connection.setAutoCommit(false);
@@ -546,7 +546,7 @@ public class DatabaseConnector {
         connection.setAutoCommit(true);
         prepstatement.close();
         return money;
-    }
+    }*/
 
     public int addQuest(int id_q, int c_id) throws SQLException {
         int cnt = 0;

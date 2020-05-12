@@ -46,29 +46,29 @@ public class OrmAdapter {
         }
     }
 
-    public void getCharacter(int id) {
+    public int getMoney(int id) {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
-        // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
-        String query = "SELECT c FROM game_character c WHERE c.id = :custID";
+        String query = "SELECT c FROM game_character c WHERE c.id = :charID";
 
-        // Issue the query and get a matching Customer
         TypedQuery<ORMgamecharacter> tq = em.createQuery(query, ORMgamecharacter.class);
-        tq.setParameter("custID", id);
+        tq.setParameter("charID", id);
 
-        ORMgamecharacter cust = null;
+        ORMgamecharacter gameChar = null;
         try {
             // Get matching customer object and output
-            cust = tq.getSingleResult();
-            System.out.println(cust.getcName() + " " + cust.getOwner_id());
+            gameChar = tq.getSingleResult();
         }
         catch(NoResultException ex) {
             ex.printStackTrace();
+            return -1;
         }
         finally {
             em.close();
+
         }
+        return gameChar.getMoney();
+
     }
     public ORMplayer getPlayer(int id) {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();

@@ -1,6 +1,7 @@
 package inventory;
 
 import database.DatabaseConnector;
+import database.OrmAdapter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -40,6 +41,7 @@ public class InventoryController {
     private int itemLvl;
     private ResultSet resultSet;
     private DatabaseConnector databaseConnector = new DatabaseConnector();
+    private OrmAdapter ormAdapter = new OrmAdapter();
     private ObservableList<ModelTab> oblist = FXCollections.observableArrayList();
     private Alert a = new Alert(Alert.AlertType.NONE);
     private List<Integer> lst = null;
@@ -156,7 +158,7 @@ public class InventoryController {
                 return;
             }
             else {
-                if (itemLvl * 5000 <= databaseConnector.getMoney(char_id)) {
+                if (itemLvl * 5000 <= ormAdapter.getMoney(char_id)) {
                     databaseConnector.buffItem(itemId, char_id, itemLvl);
                 } else {
                     a.setAlertType(Alert.AlertType.INFORMATION);
