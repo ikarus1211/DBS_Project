@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import main.Arthur;
@@ -33,6 +34,12 @@ public class Controller{
     @FXML
     private PasswordField pass;
 
+    @FXML
+    RadioButton radioSer1;
+
+    @FXML
+    RadioButton radioSer2;
+
     /*
      * Function changes the scene for registration
      */
@@ -52,8 +59,10 @@ public class Controller{
     @FXML
     private void Login(ActionEvent event) throws IOException {
 
+
         Arthur arthur = new Arthur();
         int id = arthur.loginUser(username.getText(), pass.getText());
+
         if (id > 0)
         {
 

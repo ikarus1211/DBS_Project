@@ -8,8 +8,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import java.io.IOException;
+import java.sql.SQLException;
+
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
@@ -28,7 +31,13 @@ public class RegController {
     private TextField email;
 
     @FXML
-    public void register(ActionEvent event) throws IOException {
+    RadioButton radioSer1;
+
+    @FXML
+    RadioButton radioSer2;
+
+    @FXML
+    public void register(ActionEvent event) throws IOException, SQLException {
 
 
         Alert a = new Alert(AlertType.NONE);
@@ -38,7 +47,13 @@ public class RegController {
         String passwC = passCheck.getText();
         String mail = email.getText();
 
-        if (name.length() < 20) {
+        int server = 1;
+
+        if (radioSer2.isSelected()) {
+            server = 2;
+        }
+
+        if (name.length() > 20) {
             a.setAlertType(AlertType.WARNING);
             a.setHeaderText("Username is too long!");
             a.show();
@@ -48,7 +63,8 @@ public class RegController {
             Registration registration = new Registration();
             int flag = registration.registerUser(passw,name,mail);
 
-            if (flag == 1) {
+            if (flag > 0) {
+                registration.connectUserWithServer(flag, server);
                 a.setAlertType(AlertType.INFORMATION);
                 a.setHeaderText("Account has been created successfully!");
                 a.show();

@@ -9,6 +9,7 @@ public class ORMgamecharacter implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @Column(name = "character_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     //@Column(name = "character_id", unique = true)
     private int id;
@@ -32,7 +33,7 @@ public class ORMgamecharacter implements Serializable {
     private int money;
 
     @Column(name = "guild_leader")
-    private boolean guild_leader;
+    private Boolean guild_leader;
 
     @ManyToOne
     @JoinColumn(name = "guild_id",referencedColumnName = "guild_id")

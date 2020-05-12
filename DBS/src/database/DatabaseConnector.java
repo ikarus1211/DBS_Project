@@ -79,10 +79,28 @@ public class DatabaseConnector {
         }
     }
 
-    // This function adds a new user into database
-    public int addUser(String userPassw, String userName, String userEmail)
-    {
+    public void connectUserServer(int id, int server) throws SQLException {
+        connection.setAutoCommit(false);
+        try {
+            System.out.println("shir");
+            prepstatement = connection.prepareStatement("INSERT INTO player_server (pid, sid) VALUES (?, ?)");
+            prepstatement.setInt(1, id);
+            prepstatement.setInt(2, server);
+            prepstatement.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();
+        }
+        connection.setAutoCommit(true);
+        prepstatement.close();
+    }
 
+
+    // This function adds a new user into database
+    public int addUser(String userPassw, String userName, String userEmail) throws SQLException
+    {
+        connection.setAutoCommit(false);
+        int id = 0;
         PreparedStatement prepstatement = null;
         try {
             prepstatement = connection.prepareStatement("INSERT INTO player " +
@@ -92,13 +110,23 @@ public class DatabaseConnector {
             prepstatement.setString(3, userEmail);
             prepstatement.executeUpdate();
 
+            prepstatement = connection.prepareStatement("select last_insert_id()");
+            returnedValue = prepstatement.executeQuery();
+            while (returnedValue.next()) {
+                id = returnedValue.getInt(1);
+            }
+
+            connection.commit();
         } catch (SQLException e)
         {
+            connection.rollback();
             System.out.print("Failed to add user");
             e.printStackTrace();
             return -1;
         }
-        return 1;
+        connection.setAutoCommit(true);
+        prepstatement.close();
+        return id;
     }
 
     /*
@@ -121,30 +149,6 @@ public class DatabaseConnector {
         }
     }
 
-
-    public int addCharacter(String charName, String charClass, String charRace, int id)
-    {
-        {
-
-            PreparedStatement prepstatement = null;
-            try {
-                prepstatement = connection.prepareStatement("INSERT INTO game_character " +
-                        "(character_name,character_xp,class,race,game_money,player_owner) VALUES (?,0,?,?,0,?)");
-                prepstatement.setString(1, charName);
-                prepstatement.setString(2, charClass);
-                prepstatement.setString(3, charRace);
-                prepstatement.setInt(4, id);
-                prepstatement.executeUpdate();
-
-            } catch (SQLException e)
-            {
-                System.out.print("Failed to add user");
-                e.printStackTrace();
-                return -1;
-            }
-            return 1;
-        }
-    }
 
 
     public int updateChar(int id) throws SQLException

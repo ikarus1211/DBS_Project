@@ -9,10 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import menu.MenuController;
@@ -44,10 +41,16 @@ public class LeaderboardController implements Initializable {
     Button lbNext;
     @FXML
     Button lbPrev;
+    @FXML
+    RadioButton radioSer1;
+    @FXML
+    RadioButton radioSer2;
+
 
     private int personId;
     private database.DatabaseConnector connector;
     private int offset;
+    private int server = 1;
     ObservableList<LbModelTable> oblist = FXCollections.observableArrayList();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -64,6 +67,10 @@ public class LeaderboardController implements Initializable {
 
     public void selectFilter()
     {
+        if (radioSer2.isSelected()) {
+            server = 2;
+        }
+        else server = 1;
         String selected = lbChoiceBox.getValue().toString();
         offset = 0;
     //    System.out.println(selected);

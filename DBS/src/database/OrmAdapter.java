@@ -1,5 +1,7 @@
 package database;
 
+import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
+
 import javax.persistence.*;
 
 public class OrmAdapter {
@@ -46,13 +48,13 @@ public class OrmAdapter {
         }
     }
 
-    public int getMoney(int id) {
+    public int getMoney(int id)  {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
-        String query = "SELECT c FROM game_character c WHERE c.id = :charID";
+        String query = "SELECT c FROM game_character c WHERE c.id = :chaID";
 
         TypedQuery<ORMgamecharacter> tq = em.createQuery(query, ORMgamecharacter.class);
-        tq.setParameter("charID", id);
+        tq.setParameter("chaID", id);
 
         ORMgamecharacter gameChar = null;
         try {

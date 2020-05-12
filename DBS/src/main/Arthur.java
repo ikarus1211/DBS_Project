@@ -35,11 +35,6 @@ public class Arthur extends Application{
     }
 
 
-    public void sceneChange(String fxml) throws Exception, NullPointerException{
-
-    }
-
-
     public static void main(String[] args) {
         launch(args);
     }
